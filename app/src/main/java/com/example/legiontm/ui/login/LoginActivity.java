@@ -1,4 +1,4 @@
-package com.example.legiontm.login;
+package com.example.legiontm.ui.login;
 
 import android.Manifest;
 import android.content.Context;

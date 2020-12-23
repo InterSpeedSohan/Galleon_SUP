@@ -1,4 +1,4 @@
-package com.example.legiontm.splash;
+package com.example.legiontm.ui.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.legiontm.R;
-import com.example.legiontm.login.LoginActivity;
+import com.example.legiontm.ui.login.LoginActivity;
 
 
 public class SplashActivity extends AppCompatActivity {
