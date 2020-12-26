@@ -3,15 +3,16 @@ package com.example.legiontm.model;
 import android.content.SharedPreferences;
 
 public class User {
-    String name, teamId, userId, area, teamName;
+    String name, teamId, userId, area, teamName, userType;
     static User user;
-    private User(String name,String teamId,String userId, String area, String teamName)
+    private User(String name,String teamId,String userId, String area, String teamName, String userType)
     {
         this.name = name;
         this.teamId = teamId;
         this.userId = userId;
         this.area = area;
         this.teamName = teamName;
+        this.userType = userType;
     }
     private User()
     {
@@ -32,12 +33,13 @@ public class User {
         this.userId = sharedPreference.getString("id",null);
         this.area = sharedPreference.getString("area",null);
         this.teamName = sharedPreference.getString("team",null);
+        this.userType = sharedPreference.getString("user_type",null);
     }
-    public static User createInstance(String name,String teamId,String userId,String area, String teamName)
+    public static User createInstance(String name,String teamId,String userId,String area, String teamName, String userType)
     {
         if(user == null)
         {
-            user = new User(name, teamId, userId,area, teamName);
+            user = new User(name, teamId, userId,area, teamName, userType);
         }
         return user;
     }
@@ -49,6 +51,15 @@ public class User {
     public void setName(SharedPreferences.Editor editor,String id, String name) {
         this.name = name;
         saveToSharepreference(editor, id, name);
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(SharedPreferences.Editor editor,String id, String userType) {
+        this.userType = userType;
+        saveToSharepreference(editor,id,userType);
     }
 
     public String getTeamId() {

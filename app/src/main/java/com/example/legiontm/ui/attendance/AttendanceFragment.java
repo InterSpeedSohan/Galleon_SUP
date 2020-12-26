@@ -1,9 +1,13 @@
 package com.example.legiontm.ui.attendance;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -11,9 +15,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.AuthFailureError;
@@ -29,10 +39,17 @@ import com.example.legiontm.model.User;
 import com.example.legiontm.utils.CustomUtility;
 import com.example.legiontm.utils.MySingleton;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -56,7 +73,21 @@ public class AttendanceFragment extends Fragment {
     boolean network = false;
     SweetAlertDialog sweetAlertDialog, pDialog;
     User user;
+    ProgressDialog progressDialog;
+    JSONObject jsonObject;
+    JSONArray jsonArray;
+    String activeBtn = "", fromDate = "", toDate = "",place = "",leaveType = "",retailerCode = "",reason = "",deviceDate = "";
 
+
+    final Calendar myCalendar = Calendar.getInstance();
+    final Calendar myCalendar2 = Calendar.getInstance();
+
+    Spinner retailerSpinner, optionSpinner, leaveTypeSpinner;
+    String[] optionList = new String[] {"Distribution House", "Retail Point", "Head Office","In Transit","Others"};
+    String[] retailerList = new String[] {"N/A"};
+    String[] leaveTypeList = new String[] {"Casual Leave", "Half Day Leave", "Sick Leave", "On Training", "On Meeting"};
+    List<String> DMSCode = new ArrayList<String>();
+    String typeId = "";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -79,6 +110,54 @@ public class AttendanceFragment extends Fragment {
         {
             user.setValuesFromSharedPreference(requireActivity().getSharedPreferences("user",MODE_PRIVATE));
         }
+
+
+        binding.inbtn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onClick(View v) {
+                activeBtn = "in";
+                binding.leavebtn.setBackgroundResource(R.drawable.inactive);
+                binding.inbtn.setBackgroundResource(R.drawable.active);
+                binding.outbtn.setBackgroundResource(R.drawable.inactive);
+                binding.inOutLayout.setVisibility(View.VISIBLE);
+                binding.leavelay.setVisibility(View.GONE);
+                //optionSpinner.setAdapter(adapter);
+                currentPhotoPath = "";
+                binding.takeSelfieText.setText("Take selfie");
+                binding.takeSelfieText.getResources().getColor(R.color.text_color);
+            }
+        });
+
+        binding.outbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activeBtn = "out";
+                binding.leavebtn.setBackgroundResource(R.drawable.inactive);
+                binding.inbtn.setBackgroundResource(R.drawable.inactive);
+                binding.outbtn.setBackgroundResource(R.drawable.active);
+                binding.inOutLayout.setVisibility(View.VISIBLE);
+                binding.leavelay.setVisibility(View.GONE);
+                //optionSpinner.setAdapter(adapter);
+                currentPhotoPath = "";
+                binding.takeSelfieText.setText("Take selfie");
+                binding.takeSelfieText.getResources().getColor(R.color.text_color);
+            }
+        });
+
+        binding.leavebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activeBtn = "leave";
+                binding.leavebtn.setBackgroundResource(R.drawable.active);
+                binding.inbtn.setBackgroundResource(R.drawable.inactive);
+                binding.outbtn.setBackgroundResource(R.drawable.inactive);
+                binding.inOutLayout.setVisibility(View.GONE);
+                binding.leavelay.setVisibility(View.VISIBLE);
+            }
+        });
+
+
         binding.hideGpsText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,7 +175,72 @@ public class AttendanceFragment extends Fragment {
                 }
             }
         });
-        binding.submitBtn.setOnClickListener(new View.OnClickListener() {
+
+        final DatePickerDialog.OnDateSetListener fromdate = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateFromDate();
+            }
+
+        };
+
+        binding.frombtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(requireContext(), fromdate, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+
+        final DatePickerDialog.OnDateSetListener todate = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar2.set(Calendar.YEAR, year);
+                myCalendar2.set(Calendar.MONTH, monthOfYear);
+                myCalendar2.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                if(myCalendar.compareTo(myCalendar2) == 1)
+                {
+                    binding.todate.setText("");
+                    CustomUtility.showWarning(requireContext(),"Select correct date","Failed");
+                }
+                else{
+                    updateToDate();
+                }
+
+            }
+
+        };
+
+        binding.tobtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(fromDate.equals(""))
+                {
+                    CustomUtility.showWarning(requireContext(),"Select from date first","Failed");
+                }
+                else
+                {
+                    new DatePickerDialog(requireContext(), todate, myCalendar2
+                            .get(Calendar.YEAR), myCalendar2.get(Calendar.MONTH),
+                            myCalendar2.get(Calendar.DAY_OF_MONTH)).show();
+                }
+
+            }
+        });
+
+
+        binding.submitbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 network = CustomUtility.haveNetworkConnection(requireContext());
@@ -137,7 +281,28 @@ public class AttendanceFragment extends Fragment {
         }
     }
 
+    private void updateFromDate() {
+        String myFormat = "yyyy-MM-dd"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        Log.e("FromdDate",sdf.format(myCalendar.getTime()));
+        fromDate = sdf.format(myCalendar.getTime());
+        binding.fromdate.setText(sdf.format(myCalendar.getTime()));
+    }
 
+    private void updateToDate() {
+        String myFormat = "yyyy-MM-dd"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        toDate = sdf.format(myCalendar2.getTime());
+        binding.todate.setText(sdf.format(myCalendar2.getTime()));
+    }
+
+    public String getDeviceDate()
+    {
+        String myFormat = "yyyy-MM-dd H:m:s"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        Date date = new Date();
+        return  sdf.format(date);
+    }
     private boolean chekFeilds()
     {
         if (!network)
@@ -223,7 +388,7 @@ public class AttendanceFragment extends Fragment {
                 params.put("InTimeLon",MainActivity.presentLon);
                 params.put("InTimeAccuracy",MainActivity.presentAcc);
                 params.put("InPictureData",imageString);
-                params.put("Remark",binding.lateRemark.getText().toString());
+                //params.put("Remark",binding.lateRemark.getText().toString());
                 return params;
             }
         };

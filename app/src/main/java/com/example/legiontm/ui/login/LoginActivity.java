@@ -154,7 +154,7 @@ public class LoginActivity extends AppCompatActivity {
     public void login(final String user_name, final String user_pass)
     {
         Log.e("uname+upass",user_name + " "+user_pass);
-        String upLoadServerUri = "https://fresh.atmdbd.com/api/login/login.php";
+        String upLoadServerUri = "https://rocket.atmdbd.com/api/login/login.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, upLoadServerUri,
                 new Response.Listener<String>() {
                     @Override
@@ -179,8 +179,9 @@ public class LoginActivity extends AppCompatActivity {
                                 user.setName(editor,"name", jsonObject.getString("full_name"));
                                 user.setUserId(editor, "id", jsonObject.getString("user_id"));
                                 user.setTeamId(editor, "id", jsonObject.getString("user_id"));
-                                user.setArea(editor,"area",jsonObject.getString("market_name"));
-                                user.setTeamName(editor,"team",jsonObject.getString("team_name"));
+                                user.setArea(editor,"area",jsonObject.getString("area_name"));
+                                //user.setTeamName(editor,"team",jsonObject.getString("team_name"));
+                                user.setUserType(editor,"user_type",jsonObject.getString("user_type_name"));
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(intent);
                                 finish();

@@ -7,4 +7,5 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="header_main_image_size">@dimen/_50sdp</dimen>
+    <dimen name="in_out_btn_size">@dimen/_65sdp</dimen>
 </resources>
