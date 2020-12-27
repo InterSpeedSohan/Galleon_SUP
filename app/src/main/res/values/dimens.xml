@@ -8,4 +8,8 @@
 
     <dimen name="header_main_image_size">@dimen/_50sdp</dimen>
     <dimen name="in_out_btn_size">@dimen/_65sdp</dimen>
+
+    <dimen name="header_text_view_width">@dimen/_150sdp</dimen>
+    <dimen name="box_text_view_width">@dimen/_40sdp</dimen>
+    <dimen name="box_text_view_height">@dimen/_30sdp</dimen>
 </resources>

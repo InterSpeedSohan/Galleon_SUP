@@ -193,7 +193,7 @@
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout9">
 
             <Spinner
-                android:id="@+id/Option"
+                android:id="@+id/leave_type_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -251,6 +251,7 @@
             android:layout_height="@dimen/_40sdp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/back"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/retailerlay"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -438,7 +439,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center"
-                    android:background="@drawable/side" />
+                    android:background="@drawable/ic_play" />
 
             </RelativeLayout>
 
@@ -452,7 +453,6 @@
             android:layout_height="@dimen/_40sdp"
             android:layout_marginTop="8dp"
             android:background="@drawable/back"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
@@ -474,6 +474,7 @@
                 android:fontFamily="@font/arial"
                 android:gravity="left"
                 android:paddingStart="5dp"
+                android:paddingLeft="5dp"
                 android:text="Take selfie"
                 android:textColor="#26492a"
                 android:textSize="@dimen/_15ssp"
@@ -481,20 +482,33 @@
                 app:layout_constraintEnd_toStartOf="@+id/camera"
                 app:layout_constraintStart_toEndOf="@+id/imageView6"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.586"
-                android:paddingLeft="5dp" />
+                app:layout_constraintVertical_bias="0.586" />
 
             <Button
                 android:id="@+id/camera"
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_30sdp"
-                android:background="@drawable/side"
+                android:background="@drawable/ic_play"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/takeSelfieText"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <EditText
+            android:id="@+id/late_remark"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/edit_text_black_red"
+            android:gravity="center"
+            android:hint="Remark for late attendance"
+            android:textColor="@color/black"
+            android:textColorHint="@color/ash"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout7" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
