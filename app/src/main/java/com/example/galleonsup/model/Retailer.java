@@ -1,4 +1,4 @@
-package com.example.legiontmsup.model;
+package com.example.galleonsup.model;
 
 public class Retailer {
     String retailerName, retailerDmsCode, retailerAddress, retailerLat, retailerLon, retailerVisitCount;

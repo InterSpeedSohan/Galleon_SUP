@@ -1,6 +1,7 @@
-package com.example.legiontmsup;
+package com.example.galleonsup;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -21,6 +22,8 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
     public static String presentLat = "", presentLon = "", presentAcc = "";
     private static final int MY_PERMISSIONS_REQUEST = 0;
@@ -40,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.INTERNET
     };
 
+    @SuppressLint({"RestrictedApi", "UseCompatLoadingForDrawables"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +61,17 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        /*
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setBackground(getResources().getDrawable(R.drawable.side_nav_bar));
+        getSupportActionBar().hide();
+         */
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+        toolbar.setBackground(getResources().getDrawable(R.drawable.side_nav_bar));
+        Objects.requireNonNull(getSupportActionBar()).setElevation(0);
+
+
         checkPermission();
         GPS_Start();
     }

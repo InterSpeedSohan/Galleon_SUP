@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.legiontmsup">
+    package="com.example.galleonsup">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -37,16 +37,16 @@
         android:theme="@style/Theme.Routes.NoActionBar">
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.galleonsup.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.Routes.NoActionBar"
             android:screenOrientation="portrait"
             >
         </activity>
-        <activity android:name=".ui.login.LoginActivity"
+        <activity android:name="com.example.galleonsup.ui.login.LoginActivity"
             android:screenOrientation="portrait"
             />
-        <activity android:name=".ui.splash.SplashActivity" >
+        <activity android:name="com.example.galleonsup.ui.splash.SplashActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,7 +56,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.legiontmsup.fileprovider"
+            android:authorities="com.example.galleonsup.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

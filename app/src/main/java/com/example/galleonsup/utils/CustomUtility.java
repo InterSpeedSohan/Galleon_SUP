@@ -1,4 +1,4 @@
-package com.example.legiontmsup.utils;
+package com.example.galleonsup.utils;
 
 import android.content.Context;
 import android.content.DialogInterface;

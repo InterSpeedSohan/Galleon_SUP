@@ -1,4 +1,4 @@
-package com.example.legiontmsup.ui.logout;
+package com.example.galleonsup.ui.logout;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,8 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 
-import com.example.legiontmsup.R;
-import com.example.legiontmsup.model.User;
+import com.example.galleonsup.R;
+import com.example.galleonsup.model.User;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 

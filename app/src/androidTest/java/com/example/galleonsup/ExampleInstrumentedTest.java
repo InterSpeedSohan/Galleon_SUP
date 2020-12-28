@@ -1,4 +1,4 @@
-package com.example.legiontmsup;
+package com.example.galleonsup;
 
 import android.content.Context;
 

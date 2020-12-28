@@ -1,4 +1,4 @@
-package com.example.legiontmsup.ui.splash;
+package com.example.galleonsup.ui.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,8 +11,8 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.legiontmsup.R;
-import com.example.legiontmsup.ui.login.LoginActivity;
+import com.example.galleonsup.R;
+import com.example.galleonsup.ui.login.LoginActivity;
 
 
 public class SplashActivity extends AppCompatActivity {

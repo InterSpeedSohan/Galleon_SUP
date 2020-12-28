@@ -1,4 +1,4 @@
-package com.example.legiontmsup.ui.profile;
+package com.example.galleonsup.ui.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,12 +19,12 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.example.legiontmsup.R;
-import com.example.legiontmsup.databinding.FragmentProfileBinding;
-import com.example.legiontmsup.model.User;
-import com.example.legiontmsup.ui.login.LoginActivity;
-import com.example.legiontmsup.utils.CustomUtility;
-import com.example.legiontmsup.utils.MySingleton;
+import com.example.galleonsup.R;
+import com.example.galleonsup.databinding.FragmentProfileBinding;
+import com.example.galleonsup.model.User;
+import com.example.galleonsup.ui.login.LoginActivity;
+import com.example.galleonsup.utils.CustomUtility;
+import com.example.galleonsup.utils.MySingleton;
 import com.ramijemli.percentagechartview.PercentageChartView;
 
 import org.json.JSONException;
@@ -90,7 +90,7 @@ public class ProfileFragment extends Fragment {
         binding.txtMarket.setText("Market: "+user.getArea());
 
 
-        getStatus();
+        //getStatus();
         //getList("Dec");
         //createChart();
 

@@ -1,12 +1,11 @@
- package com.example.legiontmsup.ui.evalution;
+ package com.example.galleonsup.ui.evalution;
 
 
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +14,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -24,10 +21,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.example.legiontmsup.R;
-import com.example.legiontmsup.databinding.FragmentRetailListBinding;
-import com.example.legiontmsup.model.Retailer;
-import com.example.legiontmsup.model.User;
+import com.example.galleonsup.R;
+import com.example.galleonsup.databinding.FragmentRetailListBinding;
+import com.example.galleonsup.model.Retailer;
+import com.example.galleonsup.model.User;
 
 
 import java.util.ArrayList;
@@ -35,7 +32,6 @@ import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
 public class RetailListFragment extends Fragment {
@@ -46,6 +42,7 @@ public class RetailListFragment extends Fragment {
     RecyclerView recyclerView;
     DataAdapter mAdapter;
     private final ArrayList<Retailer> dataList = new ArrayList<Retailer>();
+    private final ArrayList<Retailer> mainRetailList = new ArrayList<Retailer>();
     User user;
     FragmentRetailListBinding binding;
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -81,18 +78,90 @@ public class RetailListFragment extends Fragment {
         recyclerView.setAdapter(mAdapter);
 
         getRetailList();
+
+
+        binding.searchRetail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                getNewSearchedList(charSequence);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
+    }
+
+    private void getNewSearchedList(CharSequence s) {
+        ArrayList<Retailer> newList = new ArrayList<>();
+        if(s.equals(""))
+        {
+            dataList.clear();
+            dataList.addAll(mainRetailList);
+        }
+        else
+        {
+            for(int i = 0;i < mainRetailList.size(); i++)
+            {
+                if(mainRetailList.get(i).getRetailerName().toLowerCase().contains(s.toString().toLowerCase())
+                        || mainRetailList.get(i).getRetailerDmsCode().toLowerCase().contains(s.toString().toLowerCase())
+                        || mainRetailList.get(i).getRetailerAddress().toLowerCase().contains(s.toString().toLowerCase()))
+                {
+                    newList.add(mainRetailList.get(i));
+                }
+            }
+        }
+
+        dataList.clear();
+        dataList.addAll(newList);
+        mAdapter.notifyDataSetChanged();
     }
 
     private void getRetailList() {
 
 
         dataList.clear();
+        /*
         for (int i = 1; i<=50;i++)
         {
             dataList.add(new Retailer("S Alam Telecom "+i, "DHk101322"+i,"43A, 14Rd, Nikunjo 2, Khilkhet, Dhaka",
                     "80.23","89.33","1"));
         }
 
+         */
+        dataList.add(new Retailer("S Alam Telecom ", "DHk101322","43A, 14Rd, Nikunjo 2, Khilkhet, Dhaka",
+                "80.23","89.33","1"));
+        dataList.add(new Retailer("Maa Telecom ", "CTG342523","43A, 14Rd, Nikunjo 2, Khilkhet, Dhaka",
+                "80.23","89.33","1"));
+        dataList.add(new Retailer("Rocket Shop ", "DHk101322","43A, 14Rd, Nikunjo 2, Khilkhet, Dhaka",
+                "80.23","89.33","1"));
+        dataList.add(new Retailer("Akash Flexi", "DHk2314982","43A, 14Rd, Nikunjo 2, Khilkhet, Dhaka",
+                "80.23","89.33","1"));
+        dataList.add(new Retailer("S Alam Telecom ", "DHk098081","43A, 14Rd, Nikunjo 2, Khilkhet, Dhaka",
+                "80.23","89.33","1"));
+        dataList.add(new Retailer("S Alam Telecom ", "DHk101322","43A, 14Rd, Nikunjo 2, Khilkhet, Dhaka",
+                "80.23","89.33","1"));
+        dataList.add(new Retailer("S Alam Telecom ", "DHk101322","43A, 14Rd, Nikunjo 2, Khilkhet, Dhaka",
+                "80.23","89.33","1"));
+        dataList.add(new Retailer("S Alam Telecom ", "DHk101322","43A, 14Rd, Nikunjo 2, Khilkhet, Dhaka",
+                "80.23","89.33","1"));
+        dataList.add(new Retailer("S Alam Telecom ", "DHk101322","43A, 14Rd, Nikunjo 2, Khilkhet, Dhaka",
+                "80.23","89.33","1"));
+        dataList.add(new Retailer("S Alam Telecom ", "DHk101322","43A, 14Rd, Nikunjo 2, Khilkhet, Dhaka",
+                "80.23","89.33","1"));
+        dataList.add(new Retailer("S Alam Telecom ", "DHk101322","43A, 14Rd, Nikunjo 2, Khilkhet, Dhaka",
+                "80.23","89.33","1"));
+        dataList.add(new Retailer("S Alam Telecom ", "DHk101322","43A, 14Rd, Nikunjo 2, Khilkhet, Dhaka",
+                "80.23","89.33","1"));
+        mainRetailList.addAll(dataList);
         mAdapter.notifyDataSetChanged();
 
 
@@ -168,7 +237,7 @@ public class RetailListFragment extends Fragment {
         public DataAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.retailer_row_layout, parent, false);
-            return new DataAdapter.MyViewHolder(itemView);
+            return new MyViewHolder(itemView);
         }
 
         @Override
@@ -185,7 +254,7 @@ public class RetailListFragment extends Fragment {
             return dataList.size();
         }
 
-        public class MyViewHolder extends RecyclerView.ViewHolder {
+        public static class MyViewHolder extends RecyclerView.ViewHolder {
             TextView retailerName, retailerDmsCode, retailerAddress, retailerVisitCount;
             public MyViewHolder(View convertView) {
                 super(convertView);

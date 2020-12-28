@@ -1,4 +1,4 @@
-package com.example.legiontmsup.ui.profile;
+package com.example.galleonsup.ui.profile;
 
 public class UploadDetails {
     String date, time;

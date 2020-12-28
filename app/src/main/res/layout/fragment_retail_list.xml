@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/search_retail"
             android:layout_width="0dp"
             android:layout_height="@dimen/box_text_view_height"
             android:layout_marginStart="16dp"
@@ -19,6 +19,8 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
             android:layout_marginRight="24dp"
+            android:gravity="center"
+            android:textColor="@color/black"
             android:background="@drawable/edit_text_black_red"
             app:layout_constraintEnd_toStartOf="@+id/button"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,11 +42,10 @@
             android:id="@+id/retail_list_recycler"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText">
+            app:layout_constraintTop_toBottomOf="@+id/search_retail">
 
         </androidx.recyclerview.widget.RecyclerView>
 

@@ -1,4 +1,4 @@
-package com.example.legiontmsup.model;
+package com.example.galleonsup.model;
 
 import android.content.SharedPreferences;
 
