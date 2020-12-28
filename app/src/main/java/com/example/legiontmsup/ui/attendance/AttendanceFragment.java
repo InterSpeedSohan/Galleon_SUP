@@ -118,7 +118,7 @@ public class AttendanceFragment extends Fragment {
                 binding.inOutLayout.setVisibility(View.VISIBLE);
                 binding.leavelay.setVisibility(View.GONE);
                 //optionSpinner.setAdapter(adapter);
-                currentPhotoPath = "";
+                photoFlag = false;
                 binding.takeSelfieText.setText("Take selfie");
                 binding.takeSelfieText.getResources().getColor(R.color.text_color);
             }
@@ -134,7 +134,7 @@ public class AttendanceFragment extends Fragment {
                 binding.inOutLayout.setVisibility(View.VISIBLE);
                 binding.leavelay.setVisibility(View.GONE);
                 //optionSpinner.setAdapter(adapter);
-                currentPhotoPath = "";
+                photoFlag = false;
                 binding.takeSelfieText.setText("Take selfie");
                 binding.takeSelfieText.getResources().getColor(R.color.text_color);
             }
@@ -360,7 +360,7 @@ public class AttendanceFragment extends Fragment {
         pDialog = new SweetAlertDialog(requireContext(),SweetAlertDialog.PROGRESS_TYPE);
         pDialog.show();
 
-        String upLoadServerUri = "https://fresh.atmdbd.com/api/android/insert_attendance.php";
+        String upLoadServerUri = "https://rocket.atmdbd.com/api/android/insert_attendance.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, upLoadServerUri,
                 new Response.Listener<String>() {
                     @Override

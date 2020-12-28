@@ -12,4 +12,8 @@
     <dimen name="header_text_view_width">@dimen/_150sdp</dimen>
     <dimen name="box_text_view_width">@dimen/_40sdp</dimen>
     <dimen name="box_text_view_height">@dimen/_30sdp</dimen>
+
+    <dimen name="retail_row_layout_height">@dimen/_50sdp</dimen>
+    <dimen name="retail_tittle_text_size">@dimen/_15ssp</dimen>
+    <dimen name="retail_dms_code_text_size">@dimen/_12ssp</dimen>
 </resources>
