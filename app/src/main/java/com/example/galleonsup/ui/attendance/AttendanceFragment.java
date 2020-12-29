@@ -103,14 +103,15 @@ public class AttendanceFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 activeBtn = "in";
-                binding.leavebtn.setBackgroundResource(R.drawable.inactive);
-                binding.inbtn.setBackgroundResource(R.drawable.active);
-                binding.outbtn.setBackgroundResource(R.drawable.inactive);
+                binding.submitbtn.setVisibility(View.VISIBLE);
+                binding.leavebtn.setBackgroundResource(R.drawable.ic_attendance_inactive);
+                binding.inbtn.setBackgroundResource(R.drawable.ic_attendance_active_btn);
+                binding.outbtn.setBackgroundResource(R.drawable.ic_attendance_inactive);
                 binding.inOutLayout.setVisibility(View.VISIBLE);
                 binding.leavelay.setVisibility(View.GONE);
+                binding.lateRemark.setVisibility(View.VISIBLE);
                 //optionSpinner.setAdapter(adapter);
                 photoFlag = false;
-                binding.takeSelfieText.setText("Take selfie");
                 binding.takeSelfieText.getResources().getColor(R.color.text_color);
             }
         });
@@ -119,14 +120,15 @@ public class AttendanceFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 activeBtn = "out";
-                binding.leavebtn.setBackgroundResource(R.drawable.inactive);
-                binding.inbtn.setBackgroundResource(R.drawable.inactive);
-                binding.outbtn.setBackgroundResource(R.drawable.active);
+                binding.submitbtn.setVisibility(View.VISIBLE);
+                binding.leavebtn.setBackgroundResource(R.drawable.ic_attendance_inactive);
+                binding.inbtn.setBackgroundResource(R.drawable.ic_attendance_inactive);
+                binding.outbtn.setBackgroundResource(R.drawable.ic_attendance_active_btn);
                 binding.inOutLayout.setVisibility(View.VISIBLE);
                 binding.leavelay.setVisibility(View.GONE);
+                binding.lateRemark.setVisibility(View.GONE);
                 //optionSpinner.setAdapter(adapter);
                 photoFlag = false;
-                binding.takeSelfieText.setText("Take selfie");
                 binding.takeSelfieText.getResources().getColor(R.color.text_color);
             }
         });
@@ -138,21 +140,16 @@ public class AttendanceFragment extends Fragment {
                 activeBtn = "leave";
                 leaveType = "";
                 leaveTypeId = "";
-                binding.leavebtn.setBackgroundResource(R.drawable.active);
-                binding.inbtn.setBackgroundResource(R.drawable.inactive);
-                binding.outbtn.setBackgroundResource(R.drawable.inactive);
+                binding.submitbtn.setVisibility(View.VISIBLE);
+                binding.leavebtn.setBackgroundResource(R.drawable.ic_attendance_active_btn);
+                binding.inbtn.setBackgroundResource(R.drawable.ic_attendance_inactive);
+                binding.outbtn.setBackgroundResource(R.drawable.ic_attendance_inactive);
                 binding.inOutLayout.setVisibility(View.GONE);
                 binding.leavelay.setVisibility(View.VISIBLE);
             }
         });
 
 
-        binding.hideGpsText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.gpsText.setText(MainActivity.presentAcc);
-            }
-        });
         binding.camera.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
             @Override
@@ -164,6 +161,9 @@ public class AttendanceFragment extends Fragment {
                 }
             }
         });
+
+        binding.gpsText.setText(MainActivity.presentAcc);
+
 
         final DatePickerDialog.OnDateSetListener fromdate = new DatePickerDialog.OnDateSetListener() {
 
@@ -339,8 +339,9 @@ public class AttendanceFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Log.d("image","okk");
             photoFlag = true;
-            binding.takeSelfieText.setText(R.string.take_image_done);
+            binding.takeSelfieText.setText(R.string.done_message);
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             imageString = CustomUtility.imageToString(imageBitmap);

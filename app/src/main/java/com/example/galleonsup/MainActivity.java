@@ -9,6 +9,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.INTERNET
     };
 
+
+
     @SuppressLint({"RestrictedApi", "UseCompatLoadingForDrawables"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +70,11 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setBackground(getResources().getDrawable(R.drawable.side_nav_bar));
         getSupportActionBar().hide();
-         */
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         toolbar.setBackground(getResources().getDrawable(R.drawable.side_nav_bar));
         Objects.requireNonNull(getSupportActionBar()).setElevation(0);
+         */
+
 
 
         checkPermission();

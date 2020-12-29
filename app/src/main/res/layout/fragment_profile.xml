@@ -13,7 +13,7 @@
         android:id="@+id/profileLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_180sdp"
-        android:background="@drawable/side_nav_bar"
+        android:background="@drawable/ic_side_banner_bg_without_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">

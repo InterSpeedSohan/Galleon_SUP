@@ -15,7 +15,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@drawable/side_nav_bar"
+            android:background="@drawable/ic_side_banner_bg_without_logo"
             android:elevation="0dp"
             app:popupTheme="@style/Theme.Routes.PopupOverlay" />
 

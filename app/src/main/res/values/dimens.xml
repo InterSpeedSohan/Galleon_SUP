@@ -3,7 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
-    <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="nav_header_height">@dimen/_170sdp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="header_main_image_size">@dimen/_50sdp</dimen>
@@ -16,4 +16,13 @@
     <dimen name="retail_row_layout_height">@dimen/_50sdp</dimen>
     <dimen name="retail_tittle_text_size">@dimen/_15ssp</dimen>
     <dimen name="retail_dms_code_text_size">@dimen/_12ssp</dimen>
+
+    <dimen name="submit_btn_size">@dimen/_50sdp</dimen>
+    <dimen name="top_banner_height">@dimen/_180sdp</dimen>
+    <dimen name="pannel_icon_size">@dimen/_60sdp</dimen>
+    <dimen name="panel_main_card_height">@dimen/_110sdp</dimen>
+    <dimen name="card_view_corner_radius">@dimen/_15sdp</dimen>
+
+    <dimen name="profile_image">@dimen/_50sdp</dimen>
+    <dimen name="shadow_logo_height">@dimen/_90sdp</dimen>
 </resources>
