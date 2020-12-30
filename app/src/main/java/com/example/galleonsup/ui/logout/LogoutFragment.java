@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.galleonsup.R;
 import com.example.galleonsup.model.User;
+import com.example.galleonsup.utils.StaticTags;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -37,7 +38,7 @@ public class LogoutFragment extends Fragment {
         log.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
             @Override
             public void onClick(SweetAlertDialog sweetAlertDialog) {
-                SharedPreferences.Editor editor = getActivity().getSharedPreferences("user",MODE_PRIVATE).edit();
+                SharedPreferences.Editor editor = getActivity().getSharedPreferences(StaticTags.USER_PREFERENCE,MODE_PRIVATE).edit();
                 //editor.clear();
                 //editor.apply();
                 user.clear(editor);

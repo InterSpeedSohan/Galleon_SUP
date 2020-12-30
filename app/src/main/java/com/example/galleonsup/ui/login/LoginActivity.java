@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,6 +29,7 @@ import com.example.galleonsup.R;
 import com.example.galleonsup.model.User;
 import com.example.galleonsup.utils.CustomUtility;
 import com.example.galleonsup.utils.MySingleton;
+import com.example.galleonsup.utils.StaticTags;
 
 
 import org.json.JSONException;
@@ -83,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        sharedPreferences = getSharedPreferences("legion_tm_sup_user",MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(StaticTags.USER_PREFERENCE,MODE_PRIVATE);
         user = User.getInstance();
         if(user.isUserInSharedpreference(sharedPreferences, "id"))
         {
@@ -142,9 +144,10 @@ public class LoginActivity extends AppCompatActivity {
                                 //finish();
                                 //new LoginTask().execute(id, pass);
                                 sweetAlertDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+                                sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#08839b"));
                                 sweetAlertDialog.setTitleText("Loading");
-                                sweetAlertDialog.show();
                                 sweetAlertDialog.setCancelable(false);
+                                sweetAlertDialog.show();
                                 login(id,pass);
                             }
                         }
@@ -175,8 +178,8 @@ public class LoginActivity extends AppCompatActivity {
                             message = jsonObject.getString("message");
                             if (code.equals("true")) {
                                 jsonObject = jsonObject.getJSONObject("userData");
-                                sharedPreferences = getSharedPreferences("legion_tm_sup_user",MODE_PRIVATE);
-                                SharedPreferences.Editor editor = getSharedPreferences("legion_tm_sup_user",MODE_PRIVATE).edit();
+                                sharedPreferences = getSharedPreferences(StaticTags.USER_PREFERENCE,MODE_PRIVATE);
+                                SharedPreferences.Editor editor = getSharedPreferences(StaticTags.USER_PREFERENCE,MODE_PRIVATE).edit();
                                 /*editor.putString("name",jsonObject.getString("user_full_name"));
                                 editor.putString("id",jsonObject.getString("id"));
                                 editor.putString("area",jsonObject.getString("area_name"));

@@ -4,13 +4,20 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,19 +29,16 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.galleonsup.databinding.NavHeaderMainBinding;
+import com.example.galleonsup.model.User;
+import com.example.galleonsup.utils.StaticTags;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    public static String presentLat = "", presentLon = "", presentAcc = "";
     private static final int MY_PERMISSIONS_REQUEST = 0;
-    public LocationManager locationManager;
-    public GPSLocationListener listener;
-    public Location previousBestLocation = null;
-    private static final int TWO_MINUTES = 1000 * 60;
     private AppBarConfiguration mAppBarConfiguration;
-
     private int PERMISSION_ALL = 1;
     private static final String[] PERMISSIONS_LIST = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -45,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.INTERNET
     };
 
-
+    User user;
 
     @SuppressLint({"RestrictedApi", "UseCompatLoadingForDrawables"})
     @Override
@@ -66,19 +70,33 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        /*
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setBackground(getResources().getDrawable(R.drawable.side_nav_bar));
-        getSupportActionBar().hide();
-        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
-        toolbar.setBackground(getResources().getDrawable(R.drawable.side_nav_bar));
-        Objects.requireNonNull(getSupportActionBar()).setElevation(0);
-         */
+
+        user = User.getInstance();
+        if(user.getUserId()==null)
+        {
+            user.setValuesFromSharedPreference(getSharedPreferences(StaticTags.USER_PREFERENCE,MODE_PRIVATE));
+        }
+
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.text_name);
+        TextView navId = headerView.findViewById(R.id.id_and_area);
+        navUsername.setText(user.getName());
+        navId.setText("ID: "+user.getUserId()+","+user.getArea());
+
+
+/*
+        // for changing menuitem text and color
+        Menu menu = navigationView.getMenu();
+        MenuItem nav_camara = menu.findItem(R.id.nav_attendance);
+        SpannableString s = new SpannableString("My red MenuItem");
+        s.setSpan(new ForegroundColorSpan(Color.RED), 0, s.length(), 0);
+        nav_camara.setTitle(s);
+ */
 
 
 
         checkPermission();
-        GPS_Start();
+        //GPS_Start();
     }
     public static boolean hasPermissions(Context context, String... permissions) {
         if (context != null && permissions != null) {
@@ -103,104 +121,6 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-
-    private void GPS_Start() {
-        try {
-            locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-            listener = new GPSLocationListener();
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 4000, 0, listener);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 4000, 0, listener);
-        } catch (Exception ex) {
-
-        }
-    }
-
-    protected boolean isBetterLocation(Location location, Location currentBestLocation) {
-        if (currentBestLocation == null) {
-            // A new location is always better than no location
-            return true;
-        }
-
-        // Check whether the new location fix is newer or older
-        long timeDelta = location.getTime() - currentBestLocation.getTime();
-        boolean isSignificantlyNewer = timeDelta > TWO_MINUTES;
-        boolean isSignificantlyOlder = timeDelta < -TWO_MINUTES;
-        boolean isNewer = timeDelta > 0;
-
-        // If it's been more than two minutes since the current location, use the new location
-        // because the user has likely moved
-        if (isSignificantlyNewer) {
-            return true;
-            // If the new location is more than two minutes older, it must be worse
-        } else if (isSignificantlyOlder) {
-            return false;
-        }
-
-        // Check whether the new location fix is more or less accurate
-        int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
-        boolean isLessAccurate = accuracyDelta > 0;
-        boolean isMoreAccurate = accuracyDelta < 0;
-        boolean isSignificantlyLessAccurate = accuracyDelta > 200;
-
-        // Check if the old and new location are from the same provider
-        boolean isFromSameProvider = isSameProvider(location.getProvider(),
-                currentBestLocation.getProvider());
-
-        // Determine location quality using a combination of timeliness and accuracy
-        if (isMoreAccurate) {
-            return true;
-        } else if (isNewer && !isLessAccurate) {
-            return true;
-        } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean isSameProvider(String provider1, String provider2) {
-        if (provider1 == null) {
-            return provider2 == null;
-        }
-        return provider1.equals(provider2);
-    }
-
-    public class GPSLocationListener implements LocationListener {
-        public void onLocationChanged(final Location loc) {
-            Log.i("**********", "Location changed");
-            if (isBetterLocation(loc, previousBestLocation)) {
-
-
-                loc.getAccuracy();
-                //location.setText(" " + loc.getAccuracy());
-
-                presentLat = String.valueOf(loc.getLatitude());
-                presentLon = String.valueOf(loc.getLongitude());
-                presentAcc = String.valueOf(loc.getAccuracy());
-
-
-//                Toast.makeText(context, "Latitude" + loc.getLatitude() + "\nLongitude" + loc.getLongitude(), Toast.LENGTH_SHORT).show();
-//                intent.putExtra("Latitude", loc.getLatitude());
-                // intent.putExtra("Longitude", loc.getLongitude());
-                // intent.putExtra("Provider", loc.getProvider());
-                //requireActivity().sendBroadcast(intent);
-            }
-        }
-
-        public void onProviderDisabled(String provider) {
-            Toast.makeText(MainActivity.this, "Gps Disabled", Toast.LENGTH_SHORT).show();
-        }
-
-        public void onProviderEnabled(String provider) {
-            Toast.makeText(MainActivity.this, "Gps Enabled", Toast.LENGTH_SHORT).show();
-        }
-
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-            //Toast.makeText(getApplicationContext(), "Status Changed", Toast.LENGTH_SHORT).show();
-        }
-    }
 
 
 }

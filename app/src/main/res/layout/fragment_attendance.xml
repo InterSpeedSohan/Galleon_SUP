@@ -11,14 +11,17 @@
         android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_banner_height"
-        android:background="@drawable/banner_more_rounder"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?selectableItemBackground"
+        android:background="@drawable/banner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="@dimen/pannel_icon_size"
-            android:layout_height="@dimen/pannel_icon_size"
+            android:layout_width="@dimen/panel_icon_size_width"
+            android:layout_height="@dimen/panel_icon_size_height"
             android:background="@drawable/ic_attendance_main_panel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -28,6 +31,17 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/guide_line_constraint"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="0dp"
@@ -37,10 +51,10 @@
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
         app:cardCornerRadius="@dimen/card_view_corner_radius"
-        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout2"
+        app:layout_constraintBottom_toBottomOf="@+id/guide_line_constraint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+        app:layout_constraintTop_toBottomOf="@+id/guide_line_constraint">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:background="@color/white"
@@ -126,7 +140,7 @@
             android:layout_height="@dimen/_110sdp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            app:cardCornerRadius="@dimen/_7sdp"
+            app:cardCornerRadius="@dimen/_11sdp"
             app:layout_constraintBottom_toTopOf="@+id/late_remark"
             app:layout_constraintEnd_toStartOf="@+id/cardView3"
             app:layout_constraintStart_toStartOf="parent"
@@ -170,7 +184,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
 
                 <TextView
-                    android:id="@+id/takeSelfieText"
+                    android:id="@+id/take_selfie_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
@@ -185,7 +199,7 @@
             android:id="@+id/cardView3"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_110sdp"
-            app:cardCornerRadius="@dimen/_7sdp"
+            app:cardCornerRadius="@dimen/_11sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cardView2"
             app:layout_constraintTop_toTopOf="@+id/cardView2">
@@ -228,7 +242,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout30" />
 
                 <TextView
-                    android:id="@+id/gpsText"
+                    android:id="@+id/gps_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
@@ -259,7 +273,7 @@
 
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/leavelay"
+        android:id="@+id/leave_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -289,7 +303,6 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/textView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -326,7 +339,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
-                    android:id="@+id/frombtn"
+                    android:id="@+id/from_btn"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_marginStart="8dp"
@@ -337,7 +350,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/todate"
+                    android:id="@+id/to_date"
                     android:layout_width="@dimen/_70sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_marginEnd="8dp"
@@ -375,7 +388,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout9">
 
                 <Spinner
-                    android:id="@+id/leave_type_spinner"
+                    android:id="@+id/leave_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -396,7 +409,7 @@
             </RelativeLayout>
 
             <EditText
-                android:id="@+id/reason"
+                android:id="@+id/leave_reason"
                 android:layout_width="@dimen/_250sdp"
                 android:layout_height="@dimen/_25sdp"
                 android:layout_marginTop="16dp"

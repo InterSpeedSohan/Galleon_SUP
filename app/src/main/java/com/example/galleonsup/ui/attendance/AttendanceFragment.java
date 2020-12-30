@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -31,7 +32,9 @@ import com.example.galleonsup.R;
 import com.example.galleonsup.databinding.FragmentAttendanceBinding;
 import com.example.galleonsup.model.User;
 import com.example.galleonsup.utils.CustomUtility;
+import com.example.galleonsup.utils.GPSLocation;
 import com.example.galleonsup.utils.MySingleton;
+import com.example.galleonsup.utils.StaticTags;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,10 +70,13 @@ public class AttendanceFragment extends Fragment {
     JSONObject jsonObject;
     JSONArray jsonArray;
     String activeBtn = "", fromDate = "", toDate = "",place = "",leaveType = "", leaveTypeId = "",retailerCode = "",reason = "",deviceDate = "";
-
+    public String presentLat = "", presentLon = "", presentAcc = "";
 
     final Calendar myCalendar = Calendar.getInstance();
     final Calendar myCalendar2 = Calendar.getInstance();
+
+
+    GPSLocation gpsLocation;
 
     ArrayList<String> leaveTypeList = new ArrayList<>();
     Map<Integer, String> leaveTypeIdMap = new HashMap<>();
@@ -86,17 +92,28 @@ public class AttendanceFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        inititalize();
+        initialize();
     }
 
-    public void inititalize()
+    public void initialize()
     {
         user = User.getInstance();
         if(user.getUserId()==null)
         {
-            user.setValuesFromSharedPreference(requireActivity().getSharedPreferences("user",MODE_PRIVATE));
+            user.setValuesFromSharedPreference(requireActivity().getSharedPreferences(StaticTags.USER_PREFERENCE,MODE_PRIVATE));
         }
 
+        gpsLocation = new GPSLocation(requireContext());
+        gpsLocation.GPS_Start();
+        gpsLocation.setLocationChangedListener(new GPSLocation.LocationChangedListener() {
+            @Override
+            public void locationChangeCallback(String lat, String lon, String acc) {
+                presentLat = lat;
+                presentLon = lon;
+                presentAcc = acc;
+                binding.gpsText.setText(acc);
+            }
+        });
 
         binding.inbtn.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
@@ -108,7 +125,7 @@ public class AttendanceFragment extends Fragment {
                 binding.inbtn.setBackgroundResource(R.drawable.ic_attendance_active_btn);
                 binding.outbtn.setBackgroundResource(R.drawable.ic_attendance_inactive);
                 binding.inOutLayout.setVisibility(View.VISIBLE);
-                binding.leavelay.setVisibility(View.GONE);
+                binding.leaveLayout.setVisibility(View.GONE);
                 binding.lateRemark.setVisibility(View.VISIBLE);
                 //optionSpinner.setAdapter(adapter);
                 photoFlag = false;
@@ -125,7 +142,7 @@ public class AttendanceFragment extends Fragment {
                 binding.inbtn.setBackgroundResource(R.drawable.ic_attendance_inactive);
                 binding.outbtn.setBackgroundResource(R.drawable.ic_attendance_active_btn);
                 binding.inOutLayout.setVisibility(View.VISIBLE);
-                binding.leavelay.setVisibility(View.GONE);
+                binding.leaveLayout.setVisibility(View.GONE);
                 binding.lateRemark.setVisibility(View.GONE);
                 //optionSpinner.setAdapter(adapter);
                 photoFlag = false;
@@ -145,7 +162,7 @@ public class AttendanceFragment extends Fragment {
                 binding.inbtn.setBackgroundResource(R.drawable.ic_attendance_inactive);
                 binding.outbtn.setBackgroundResource(R.drawable.ic_attendance_inactive);
                 binding.inOutLayout.setVisibility(View.GONE);
-                binding.leavelay.setVisibility(View.VISIBLE);
+                binding.leaveLayout.setVisibility(View.VISIBLE);
             }
         });
 
@@ -162,7 +179,6 @@ public class AttendanceFragment extends Fragment {
             }
         });
 
-        binding.gpsText.setText(MainActivity.presentAcc);
 
 
         final DatePickerDialog.OnDateSetListener fromdate = new DatePickerDialog.OnDateSetListener() {
@@ -179,7 +195,7 @@ public class AttendanceFragment extends Fragment {
 
         };
 
-        binding.frombtn.setOnClickListener(new View.OnClickListener() {
+        binding.fromBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new DatePickerDialog(requireContext(), fromdate, myCalendar
@@ -200,7 +216,7 @@ public class AttendanceFragment extends Fragment {
                 myCalendar2.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 if(myCalendar.compareTo(myCalendar2) == 1)
                 {
-                    binding.todate.setText("");
+                    binding.toDate.setText("");
                     CustomUtility.showWarning(requireContext(),"Select correct date","Failed");
                 }
                 else{
@@ -229,10 +245,10 @@ public class AttendanceFragment extends Fragment {
         });
 
 
-        binding.leaveTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.leaveSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                leaveType = binding.leaveTypeSpinner.getSelectedItem().toString();
+                leaveType = binding.leaveSpinner.getSelectedItem().toString();
                 leaveTypeId = leaveTypeIdMap.get(position);
             }
 
@@ -277,6 +293,9 @@ public class AttendanceFragment extends Fragment {
 
     private void getLeaveType() {
         pDialog = new SweetAlertDialog(requireContext(),SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#08839b"));
+        pDialog.setTitleText("Loading");
+        pDialog.setCancelable(false);
         pDialog.show();
         String upLoadServerUri = "https://rocket.atmdbd.com/api/android/get_attendance_status_list.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, upLoadServerUri,
@@ -298,7 +317,7 @@ public class AttendanceFragment extends Fragment {
                                     leaveTypeIdMap.put(i,jsonArray.getJSONObject(i).getString("id"));
                                 }
                                 ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(requireContext(), R.layout.spinner_item, leaveTypeList);
-                                binding.leaveTypeSpinner.setAdapter(adapter2);
+                                binding.leaveSpinner.setAdapter(adapter2);
                             }
                             else
                             {
@@ -360,7 +379,7 @@ public class AttendanceFragment extends Fragment {
         String myFormat = "yyyy-MM-dd"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         toDate = sdf.format(myCalendar2.getTime());
-        binding.todate.setText(sdf.format(myCalendar2.getTime()));
+        binding.toDate.setText(sdf.format(myCalendar2.getTime()));
     }
 
     public String getDeviceDate()
@@ -382,7 +401,7 @@ public class AttendanceFragment extends Fragment {
             CustomUtility.showWarning(requireContext(),"Select attendance type In, Out or Leave","Required feild!");
             return false;
         }
-        else if(MainActivity.presentAcc.equals(""))
+        else if(presentAcc.equals(""))
         {
             CustomUtility.showWarning(requireContext(),"Please wait for the gps","Required fields");
             return false;
@@ -402,7 +421,7 @@ public class AttendanceFragment extends Fragment {
             CustomUtility.showWarning(requireContext(), "Select leave type","Required feild!");
             return false;
         }
-        else if(activeBtn.equals("leave") & binding.reason.getText().toString().equals(""))
+        else if(activeBtn.equals("leave") & binding.leaveReason.getText().toString().equals(""))
         {
             CustomUtility.showWarning(requireContext(),"Write the reason","Required feild!");
             return false;
@@ -415,6 +434,9 @@ public class AttendanceFragment extends Fragment {
     private void upload()
     {
         pDialog = new SweetAlertDialog(requireContext(),SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#08839b"));
+        pDialog.setTitleText("Loading");
+        pDialog.setCancelable(false);
         pDialog.show();
         String upLoadServerUri;
         if(activeBtn.equals("leave"))
@@ -485,14 +507,14 @@ public class AttendanceFragment extends Fragment {
                     params.put("LeaveTypeId",leaveTypeId);
                     params.put("LeaveDateStart",fromDate);
                     params.put("LeaveDateEnd",toDate);
-                    params.put("Reason",binding.reason.getText().toString());
+                    params.put("Reason",binding.leaveReason.getText().toString());
                 }
                 else
                 {
                     params.put("DeviceDate",getDeviceDate());
-                    params.put("Latitude", MainActivity.presentLat);
-                    params.put("Longitude",MainActivity.presentLon);
-                    params.put("Accuracy",MainActivity.presentAcc);
+                    params.put("Latitude", presentLat);
+                    params.put("Longitude",presentLon);
+                    params.put("Accuracy",presentAcc);
                     params.put("PictureData",imageString);
                     params.put("Remark",binding.lateRemark.getText().toString());
                 }
@@ -502,4 +524,5 @@ public class AttendanceFragment extends Fragment {
         stringRequest.setRetryPolicy(new DefaultRetryPolicy( 50000, 5, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         MySingleton.getInstance(requireContext()).addToRequestQue(stringRequest);
     }
+
 }
