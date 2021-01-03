@@ -1,4 +1,5 @@
-<androidx.cardview.widget.CardView android:layout_width="match_parent"
+<androidx.cardview.widget.CardView xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:id="@+id/retail_row_layout"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
@@ -20,61 +21,86 @@
         android:layout_height="match_parent"
         android:focusable="true">
 
-        <TextView
-            android:id="@+id/retail_name"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:text="S Alam Telecom"
-            android:textColor="@color/black"
-            android:textSize="@dimen/retail_tittle_text_size"
+            android:layout_height="0dp"
+            android:background="@drawable/ic_list_left_border"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15ssp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/dms_code"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="DMS Code: DHK102034"
-            android:textColor="@color/black"
-            android:textSize="@dimen/retail_dms_code_text_size"
-            app:layout_constraintStart_toStartOf="@+id/retail_name"
-            app:layout_constraintTop_toBottomOf="@+id/retail_name" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/retailer_visit_count"
+            app:layout_constraintStart_toEndOf="@+id/appCompatTextView"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/retailer_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="43A, 14Rd, Nikunjo 2, Khilkhet, Dhaka"
+            <TextView
+                android:id="@+id/retail_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:text="S Alam Telecom"
+                android:textColor="@color/black"
+                android:textSize="@dimen/retail_tittle_text_size"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/dms_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="DMS Code: DHK102034"
+                android:textColor="@color/black"
+                android:textSize="@dimen/retail_dms_code_text_size"
+                app:layout_constraintStart_toStartOf="@+id/retail_name"
+                app:layout_constraintTop_toBottomOf="@+id/retail_name" />
+
+            <TextView
+                android:id="@+id/retailer_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="43A, 14Rd, Nikunjo 2, Khilkhet, Dhaka"
+                android:textColor="@color/black"
+                android:textSize="@dimen/retail_dms_code_text_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/dms_code"
+                app:layout_constraintTop_toBottomOf="@+id/dms_code" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/retailer_visit_count"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/ic_green_box"
+            android:gravity="center"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:text="1"
             android:textColor="@color/black"
             android:textSize="@dimen/retail_dms_code_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/dms_code"
-            app:layout_constraintTop_toBottomOf="@+id/dms_code" />
-
-        <TextView
-            android:id="@+id/retailer_visit_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/text_view_ash"
-            android:layout_marginRight="8dp"
-            android:text="Visit Count: 1"
-            android:textColor="@color/black"
-            android:paddingLeft="@dimen/_10sdp"
-            android:paddingEnd="@dimen/_10sdp"
-            android:textSize="@dimen/retail_dms_code_text_size"
-            app:layout_constraintBottom_toBottomOf="@+id/dms_code"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/retail_name"
-            android:paddingStart="@dimen/_10sdp" />
-
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

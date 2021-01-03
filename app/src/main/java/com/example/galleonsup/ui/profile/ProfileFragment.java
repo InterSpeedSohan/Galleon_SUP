@@ -13,27 +13,17 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+import com.example.galleonsup.A;
 import com.example.galleonsup.R;
 import com.example.galleonsup.databinding.FragmentProfileBinding;
 import com.example.galleonsup.model.User;
 import com.example.galleonsup.ui.login.LoginActivity;
-import com.example.galleonsup.utils.CustomUtility;
-import com.example.galleonsup.utils.MySingleton;
-import com.ramijemli.percentagechartview.PercentageChartView;
 
-import org.json.JSONException;
+
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -80,6 +70,13 @@ public class ProfileFragment extends Fragment {
 
         binding.todayChart.setProgress((float) 70.0,true);
         binding.totalChart.setProgress((float) 30.0,true);
+
+        binding.totalTmr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new A()).commit();
+            }
+        });
 
     }
 
