@@ -6,14 +6,18 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -78,6 +82,7 @@ public class RetailListFragment extends Fragment {
         recyclerView.setAdapter(mAdapter);
 
         getRetailList();
+
 
 
         binding.searchRetail.addTextChangedListener(new TextWatcher() {
@@ -224,10 +229,9 @@ public class RetailListFragment extends Fragment {
         //requireContext().stopService(intent);
     }
     // data adapter class for showing the list
-    public static class DataAdapter extends RecyclerView.Adapter<DataAdapter.MyViewHolder> {
+    public class DataAdapter extends RecyclerView.Adapter<DataAdapter.MyViewHolder> {
 
         private final List<Retailer> dataList;
-
         public DataAdapter(List<Retailer> dataList) {
             this.dataList = dataList;
         }
@@ -247,6 +251,7 @@ public class RetailListFragment extends Fragment {
             holder.retailerDmsCode.setText(data.getRetailerDmsCode());
             holder.retailerVisitCount.setText(data.getRetailerVisitCount());
             holder.retailerAddress.setText(data.getRetailerAddress());
+
         }
 
         @Override
@@ -254,14 +259,16 @@ public class RetailListFragment extends Fragment {
             return dataList.size();
         }
 
-        public static class MyViewHolder extends RecyclerView.ViewHolder {
+        public  class MyViewHolder extends RecyclerView.ViewHolder {
             TextView retailerName, retailerDmsCode, retailerAddress, retailerVisitCount;
+            CardView rowLayout;
             public MyViewHolder(View convertView) {
                 super(convertView);
                 retailerName = convertView.findViewById(R.id.retail_name);
                 retailerDmsCode = convertView.findViewById(R.id.dms_code);
                 retailerAddress = convertView.findViewById(R.id.retailer_address);
                 retailerVisitCount = convertView.findViewById(R.id.retailer_visit_count);
+                rowLayout = convertView.findViewById(R.id.retail_row_layout);
             }
         }
     }

@@ -233,7 +233,7 @@
 
                 <ImageView
                     android:id="@+id/imageView3"
-                    android:layout_width="@dimen/_25sdp"
+                    android:layout_width="@dimen/_27sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:background="@drawable/ic_gps"
                     app:layout_constraintBottom_toBottomOf="parent"

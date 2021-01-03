@@ -14,7 +14,7 @@
 
     <dimen name="submit_btn_size">@dimen/_50sdp</dimen>
     <dimen name="top_banner_height">@dimen/_150sdp</dimen>
-    <dimen name="panel_icon_size_width">@dimen/_55sdp</dimen>
+    <dimen name="panel_icon_size_width">@dimen/_57sdp</dimen>
     <dimen name="panel_icon_size_height">@dimen/_50sdp</dimen>
     <dimen name="panel_main_card_height">@dimen/_110sdp</dimen>
     <dimen name="card_view_corner_radius">@dimen/_15sdp</dimen>
@@ -27,6 +27,8 @@
     <dimen name="progress_bar_dimen">@dimen/_75sdp</dimen>
     <dimen name="dashboard_card_view_height">@dimen/_40sdp</dimen>
     <dimen name="left_bullet_width">@dimen/_60sdp</dimen>
+    <dimen name="ic_bullet_height">@dimen/_13sdp</dimen>
+    <dimen name="ic_buttet_width">@dimen/_25sdp</dimen>
 
 
 </resources>

@@ -22,7 +22,7 @@
         <ImageView
             android:layout_width="@dimen/panel_icon_size_width"
             android:layout_height="@dimen/panel_icon_size_height"
-            android:background="@drawable/ic_evaluation_main_panel"
+            android:background="@drawable/ic_dashboard_side_menu"
             android:backgroundTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -44,7 +44,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.cardview.widget.CardView
-        android:id="@+id/top_panel_card_view"
+        android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="@dimen/_80sdp"
         android:layout_marginStart="24dp"
@@ -73,7 +73,6 @@
                 android:textColorHint="@color/ash"
                 android:hint="দোকানের নাম অথবা কোড লিখুন"
                 android:gravity="center"
-                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -86,15 +85,11 @@
         android:id="@+id/retailListRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_panel_card_view">
+        app:layout_constraintTop_toBottomOf="@+id/cardView">
 
     </androidx.recyclerview.widget.RecyclerView>
 
