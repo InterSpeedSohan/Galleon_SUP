@@ -82,8 +82,7 @@ public class MainActivity extends AppCompatActivity {
         TextView navId = headerView.findViewById(R.id.id_and_area);
         navUsername.setText(user.getName());
         navId.setText("ID: "+user.getUserId()+","+user.getArea());
-
-
+        
 /*
         // for changing menuitem text and color
         Menu menu = navigationView.getMenu();

@@ -67,6 +67,7 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     User user;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,6 +159,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
         );
     }
+
 
 
 

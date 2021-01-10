@@ -75,6 +75,7 @@ public class AttendanceFragment extends Fragment {
     final Calendar myCalendar = Calendar.getInstance();
     final Calendar myCalendar2 = Calendar.getInstance();
 
+    int animDuration;
 
     GPSLocation gpsLocation;
 
@@ -115,6 +116,8 @@ public class AttendanceFragment extends Fragment {
             }
         });
 
+        animDuration = 1000;
+
         binding.inbtn.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
             @Override
@@ -124,9 +127,11 @@ public class AttendanceFragment extends Fragment {
                 binding.leavebtn.setBackgroundResource(R.drawable.ic_attendance_inactive);
                 binding.inbtn.setBackgroundResource(R.drawable.ic_attendance_active_btn);
                 binding.outbtn.setBackgroundResource(R.drawable.ic_attendance_inactive);
-                binding.inOutLayout.setVisibility(View.VISIBLE);
+                //binding.inOutLayout.setVisibility(View.VISIBLE);
+                crossfadeVisible(binding.inOutLayout);
                 binding.leaveLayout.setVisibility(View.GONE);
-                binding.lateRemark.setVisibility(View.VISIBLE);
+                //binding.lateRemark.setVisibility(View.VISIBLE);
+                crossfadeVisible(binding.lateRemark);
                 //optionSpinner.setAdapter(adapter);
                 photoFlag = false;
                 binding.takeSelfieText.getResources().getColor(R.color.text_color);
@@ -141,7 +146,8 @@ public class AttendanceFragment extends Fragment {
                 binding.leavebtn.setBackgroundResource(R.drawable.ic_attendance_inactive);
                 binding.inbtn.setBackgroundResource(R.drawable.ic_attendance_inactive);
                 binding.outbtn.setBackgroundResource(R.drawable.ic_attendance_active_btn);
-                binding.inOutLayout.setVisibility(View.VISIBLE);
+                //binding.inOutLayout.setVisibility(View.VISIBLE);
+                crossfadeVisible(binding.inOutLayout);
                 binding.leaveLayout.setVisibility(View.GONE);
                 binding.lateRemark.setVisibility(View.GONE);
                 //optionSpinner.setAdapter(adapter);
@@ -162,7 +168,8 @@ public class AttendanceFragment extends Fragment {
                 binding.inbtn.setBackgroundResource(R.drawable.ic_attendance_inactive);
                 binding.outbtn.setBackgroundResource(R.drawable.ic_attendance_inactive);
                 binding.inOutLayout.setVisibility(View.GONE);
-                binding.leaveLayout.setVisibility(View.VISIBLE);
+                //binding.leaveLayout.setVisibility(View.VISIBLE);
+                crossfadeVisible(binding.leaveLayout);
             }
         });
 
@@ -429,8 +436,6 @@ public class AttendanceFragment extends Fragment {
         return true;
     }
 
-
-
     private void upload()
     {
         pDialog = new SweetAlertDialog(requireContext(),SweetAlertDialog.PROGRESS_TYPE);
@@ -523,6 +528,16 @@ public class AttendanceFragment extends Fragment {
         };
         stringRequest.setRetryPolicy(new DefaultRetryPolicy( 50000, 5, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         MySingleton.getInstance(requireContext()).addToRequestQue(stringRequest);
+    }
+
+    private void crossfadeVisible(View view) {
+        view.setAlpha(0f);
+        view.setVisibility(View.VISIBLE);
+
+        view.animate()
+                .alpha(1f)
+                .setDuration(animDuration)
+                .setListener(null);
     }
 
 }
