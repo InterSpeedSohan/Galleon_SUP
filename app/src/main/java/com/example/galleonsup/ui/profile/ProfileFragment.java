@@ -6,6 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -67,6 +71,14 @@ public class ProfileFragment extends Fragment {
                 }
             });
         }
+
+        Animation animation = new AlphaAnimation(1, (float) 0.80); //to change visibility from visible to invisible
+        animation.setDuration(1500); //1 second duration for each animation cycle
+        animation.setInterpolator(new LinearInterpolator());
+        animation.setRepeatCount(Animation.INFINITE); //repeating indefinitely
+        animation.setRepeatMode(Animation.REVERSE); //animation will start from end point once ended.
+        binding.banner.startAnimation(animation); //to start animation
+
 
         binding.todayChart.setProgress((float) 70.0,true);
         binding.totalChart.setProgress((float) 30.0,true);

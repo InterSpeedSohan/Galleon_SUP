@@ -13,9 +13,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,6 +39,9 @@ import com.example.galleonsup.utils.CustomUtility;
 import com.example.galleonsup.utils.GPSLocation;
 import com.example.galleonsup.utils.MySingleton;
 import com.example.galleonsup.utils.StaticTags;
+import com.github.ybq.android.spinkit.SpinKitView;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.DoubleBounce;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -81,6 +88,9 @@ public class AttendanceFragment extends Fragment {
 
     ArrayList<String> leaveTypeList = new ArrayList<>();
     Map<Integer, String> leaveTypeIdMap = new HashMap<>();
+
+    SpinKitView spinKitView;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -115,6 +125,14 @@ public class AttendanceFragment extends Fragment {
                 binding.gpsText.setText(acc);
             }
         });
+
+
+        Animation animation = new AlphaAnimation(1, (float) 0.80); //to change visibility from visible to invisible
+        animation.setDuration(1500); //1 second duration for each animation cycle
+        animation.setInterpolator(new LinearInterpolator());
+        animation.setRepeatCount(Animation.INFINITE); //repeating indefinitely
+        animation.setRepeatMode(Animation.REVERSE); //animation will start from end point once ended.
+        binding.banner.startAnimation(animation); //to start animation
 
         animDuration = 1000;
 
@@ -294,22 +312,34 @@ public class AttendanceFragment extends Fragment {
             }
         });
 
+        spinKitView = binding.loadingAnimation;
         getLeaveType();
 
     }
 
+    private void disableAll()
+    {
+        binding.inbtn.setEnabled(false);
+        binding.outbtn.setEnabled(false);
+        binding.leavebtn.setEnabled(false);
+    }
+
+    private void enableAll()
+    {
+        binding.inbtn.setEnabled(true);
+        binding.outbtn.setEnabled(true);
+        binding.leavebtn.setEnabled(true);
+    }
+
     private void getLeaveType() {
-        pDialog = new SweetAlertDialog(requireContext(),SweetAlertDialog.PROGRESS_TYPE);
-        pDialog.getProgressHelper().setBarColor(Color.parseColor("#08839b"));
-        pDialog.setTitleText("Loading");
-        pDialog.setCancelable(false);
-        pDialog.show();
+        disableAll();
+        spinKitView.setVisibility(View.VISIBLE);
         String upLoadServerUri = "https://rocket.atmdbd.com/api/android/get_attendance_status_list.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, upLoadServerUri,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        pDialog.dismiss();
+                        spinKitView.setVisibility(View.GONE);
                         Log.e("response",response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
@@ -317,6 +347,7 @@ public class AttendanceFragment extends Fragment {
                             String message = jsonObject.getString("message");
                             if(code.equals("true"))
                             {
+                                enableAll();
                                 jsonArray = jsonObject.getJSONArray("attendanceStatusList");
                                 for(int i=0;i<jsonArray.length();i++)
                                 {
@@ -330,7 +361,6 @@ public class AttendanceFragment extends Fragment {
                             {
                                 code = "Failed";
                                 CustomUtility.showError(requireContext(),message,code);
-                                //CustomUtility.showError(AttendanceActivity.this,"You allready submitted in",code);
                             }
 
 
@@ -341,7 +371,7 @@ public class AttendanceFragment extends Fragment {
                 }, new Response.ErrorListener(){
             @Override
             public void onErrorResponse(VolleyError error) {
-                pDialog.dismiss();
+                spinKitView.setVisibility(View.GONE);
                 Log.e("response",error.toString());
                 CustomUtility.showError(requireContext(), "Network slow, try again", "Failed");
 
