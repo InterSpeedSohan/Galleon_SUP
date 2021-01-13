@@ -90,9 +90,10 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new A()).commit();
                 getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.nav_host_fragment, new A())
-                    .addToBackStack("a")
-                    .commit();
+                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,R.anim.pop_enter, R.anim.pop_exit)
+                        .replace(R.id.nav_host_fragment, new A())
+                        .addToBackStack("a")
+                        .commit();
             }
         });
 
