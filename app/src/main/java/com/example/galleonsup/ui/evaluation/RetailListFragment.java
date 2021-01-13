@@ -1,4 +1,4 @@
- package com.example.galleonsup.ui.evalution;
+ package com.example.galleonsup.ui.evaluation;
 
 
 import android.content.SharedPreferences;
@@ -6,15 +6,12 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 

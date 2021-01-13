@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.galleonsup.A;
 import com.example.galleonsup.R;
@@ -56,6 +57,7 @@ public class ProfileFragment extends Fragment {
 
     private void initialize(View view)
     {
+        clearAllBackStackFragment();
 
         user = User.getInstance();
 
@@ -86,11 +88,26 @@ public class ProfileFragment extends Fragment {
         binding.totalTmr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new A()).commit();
+                //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new A()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.nav_host_fragment, new A())
+                    .addToBackStack("a")
+                    .commit();
             }
         });
 
     }
 
+    private void clearAllBackStackFragment() {
+        Log.d("stack count", String.valueOf(getActivity().getSupportFragmentManager().getBackStackEntryCount()));
+        if (getActivity().getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
+    }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+    }
 }
