@@ -15,6 +15,7 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     boolean doubleBackToExitPressedOnce = false;
     User user;
     NavController navController;
+    private float x1,x2;
+    static final int MIN_DISTANCE = 150;
 
     @SuppressLint({"RestrictedApi", "UseCompatLoadingForDrawables"})
     @Override
@@ -148,4 +151,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+
 }

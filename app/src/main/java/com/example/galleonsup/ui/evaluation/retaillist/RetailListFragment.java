@@ -1,4 +1,4 @@
- package com.example.galleonsup.ui.evaluation;
+ package com.example.galleonsup.ui.evaluation.retaillist;
 
 
 import android.content.SharedPreferences;

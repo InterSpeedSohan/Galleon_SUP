@@ -23,8 +23,9 @@ import com.example.galleonsup.A;
 import com.example.galleonsup.R;
 import com.example.galleonsup.databinding.FragmentProfileBinding;
 import com.example.galleonsup.model.User;
+import com.example.galleonsup.ui.evaluation.tmrlist.TmrListFragment;
 import com.example.galleonsup.ui.login.LoginActivity;
-
+import com.example.galleonsup.utils.StaticTags;
 
 import org.json.JSONObject;
 
@@ -69,7 +70,7 @@ public class ProfileFragment extends Fragment {
                 @Override
                 public void onClick(SweetAlertDialog sweetAlertDialog) {
                     startActivity(new Intent(requireContext(), LoginActivity.class));
-                    getActivity().finish();
+                    requireActivity().finish();
                 }
             });
         }
@@ -89,10 +90,10 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new A()).commit();
-                getActivity().getSupportFragmentManager().beginTransaction()
+                requireActivity().getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,R.anim.pop_enter, R.anim.pop_exit)
-                        .replace(R.id.nav_host_fragment, new A())
-                        .addToBackStack("a")
+                        .replace(R.id.nav_host_fragment, new TmrListFragment())
+                        .addToBackStack(StaticTags.TMR_LIST_FRAGMENT_TAG)
                         .commit();
             }
         });
@@ -100,9 +101,9 @@ public class ProfileFragment extends Fragment {
     }
 
     private void clearAllBackStackFragment() {
-        Log.d("stack count", String.valueOf(getActivity().getSupportFragmentManager().getBackStackEntryCount()));
-        if (getActivity().getSupportFragmentManager().getBackStackEntryCount() > 1) {
-            getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        Log.d("stack count", String.valueOf(requireActivity().getSupportFragmentManager().getBackStackEntryCount()));
+        if (requireActivity().getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            requireActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
     }
 
