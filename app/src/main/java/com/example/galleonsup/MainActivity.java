@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() < 1 && navController.getCurrentDestination().getId() == R.id.nav_profile) {
+        if (getSupportFragmentManager().getBackStackEntryCount() < 1 && Objects.requireNonNull(navController.getCurrentDestination()).getId() == R.id.nav_profile) {
             if (doubleBackToExitPressedOnce) {
                 super.onBackPressed();
                 return;
