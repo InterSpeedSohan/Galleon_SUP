@@ -5,6 +5,10 @@
     <string name="menu_evaluation">Evaluation</string>
     <string name="menu_logout">Logout</string>
     <string name="menu_attendance">Attendance</string>
+    <string name="menu_notification">Notification</string>
+
+
+
 
     <string name="user_type"></string>
     <string name="maps_api_key">AIzaSyCJUrup2ifisnMCMcq3_bFSaatCrnASDL4</string>

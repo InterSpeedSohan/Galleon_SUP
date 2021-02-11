@@ -11,4 +11,7 @@
 
     <color name="primary">#08839b</color>
     <color name="primary_light">#58CAE1</color>
+
+    <color name="seen">#3DBD5D</color>
+    <color name="unseen">#93254F</color>
 </resources>
