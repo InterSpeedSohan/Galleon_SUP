@@ -1,6 +1,11 @@
 package com.example.galleonsup.model;
 
-public class Notification {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+
+
+public class Notification implements Parcelable {
     String id, header, body, url, type, isSeen;
     public Notification(String id, String header, String body, String url, String type, String isSeen)
     {
@@ -11,6 +16,27 @@ public class Notification {
         this.type = type;
         this.isSeen = isSeen;
     }
+
+    protected Notification(Parcel in) {
+        id = in.readString();
+        header = in.readString();
+        body = in.readString();
+        url = in.readString();
+        type = in.readString();
+        isSeen = in.readString();
+    }
+
+    public static final Creator<Notification> CREATOR = new Creator<Notification>() {
+        @Override
+        public Notification createFromParcel(Parcel in) {
+            return new Notification(in);
+        }
+
+        @Override
+        public Notification[] newArray(int size) {
+            return new Notification[size];
+        }
+    };
 
     public String getIsSeen() {
         return isSeen;
@@ -58,5 +84,20 @@ public class Notification {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(header);
+        parcel.writeString(body);
+        parcel.writeString(url);
+        parcel.writeString(type);
+        parcel.writeString(isSeen);
     }
 }

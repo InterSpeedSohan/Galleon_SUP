@@ -27,6 +27,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -34,6 +35,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.galleonsup.databinding.NavHeaderMainBinding;
 import com.example.galleonsup.model.User;
+import com.example.galleonsup.ui.notification.NotificationDetailsShowingFragment;
 import com.example.galleonsup.utils.StaticTags;
 import com.google.android.material.navigation.NavigationView;
 
@@ -146,6 +148,15 @@ public class MainActivity extends AppCompatActivity {
                 }
             }, 2000);
         }
+        else if (Objects.requireNonNull(navController.getCurrentDestination()).getId() == R.id.nav_notification) {
+           if(getSupportFragmentManager().getBackStackEntryCount() >= 1)
+           {
+               getSupportFragmentManager().popBackStack(StaticTags.NOTIFICATION_DETAILS_SHOWING_FRAGMENT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+           }
+           else super.onBackPressed();
+            Log.d("notification frag","okk");
+        }
+
         else {
             super.onBackPressed();
         }

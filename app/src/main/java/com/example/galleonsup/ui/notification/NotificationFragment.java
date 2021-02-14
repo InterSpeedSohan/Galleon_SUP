@@ -2,6 +2,7 @@ package com.example.galleonsup.ui.notification;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,16 +27,31 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.example.galleonsup.MainActivity;
 import com.example.galleonsup.R;
 import com.example.galleonsup.databinding.FragmentNotificationListBinding;
 import com.example.galleonsup.model.Notification;
 import com.example.galleonsup.model.User;
+import com.example.galleonsup.ui.evaluation.tmrlist.TmrListFragment;
 import com.example.galleonsup.ui.login.LoginActivity;
+import com.example.galleonsup.utils.CustomUtility;
+import com.example.galleonsup.utils.MySingleton;
+import com.example.galleonsup.utils.StaticTags;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -70,7 +87,7 @@ public class NotificationFragment extends Fragment {
 
     private void initialize(View view)
     {
-        clearAllBackStackFragment();
+        //clearAllBackStackFragment();
 
         user = User.getInstance();
 
@@ -100,7 +117,7 @@ public class NotificationFragment extends Fragment {
         recyclerView.setDrawingCacheEnabled(true);
         recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(),1);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(requireActivity().getApplicationContext(),1);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -190,12 +207,7 @@ public class NotificationFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
     }
 
-    private void clearAllBackStackFragment() {
-        Log.d("stack count", String.valueOf(requireActivity().getSupportFragmentManager().getBackStackEntryCount()));
-        if (requireActivity().getSupportFragmentManager().getBackStackEntryCount() > 1) {
-            requireActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        }
-    }
+
 
     @Override
     public void onDestroyView() {
@@ -210,7 +222,7 @@ public class NotificationFragment extends Fragment {
 
         seenDataList.clear();
         unseenDataList.clear();
-
+/*
         for (int i = 1; i<=10;i++)
         {
             seenDataList.add(new Notification(String.valueOf(i), "Welcome to the new campaign"+i,"This is a new campaign",
@@ -224,63 +236,71 @@ public class NotificationFragment extends Fragment {
         }
 
 
-        //mainNotificationList.addAll(seenDataList);
-        mainNotificationList.addAll(unseenDataList);
 
-        mAdapter.notifyDataSetChanged();
-
-
-        /*
+ */
+        //
         sweetAlertDialog = new SweetAlertDialog(requireContext(), 5);
         sweetAlertDialog.setTitleText("Loading");
+        sweetAlertDialog.setCancelable(false);
         sweetAlertDialog.show();
-        MySingleton.getInstance(requireContext()).addToRequestQue(new StringRequest(1, "https://fresh.atmdbd.com/api/android/get_brand_list.php", new Response.Listener<String>() {
-            public void onResponse(String response) {
-                try {
-                    sweetAlertDialog.dismiss();
-                    Log.e("response", response);
-                    jsonObject = new JSONObject(response);
-                    String code = jsonObject.getString("success");
-                    if (code.equals("true")) {
-                        JSONArray jsonArray = jsonObject.getJSONArray("brandList");
-                        for (int i = 0; i<jsonArray.length();i++)
-                        {
-                            priorBrandList.add(jsonArray.getJSONObject(i).getString("name"));
-                            brandMap.put(i,jsonArray.getJSONObject(i).getString("id"));
+        String upLoadServerUri = "https://galleon.atmdbd.com/api/notification/get_user_active_notification_list.php";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, upLoadServerUri,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            sweetAlertDialog.dismiss();
+                            Log.e("response", response);
+                            jsonObject = new JSONObject(response);
+                            String code = jsonObject.getString("success");
+                            if (code.equals("true")) {
+                                JSONArray jsonArray = jsonObject.getJSONArray("itemList");
+                                for (int i = 0; i<jsonArray.length();i++)
+                                {
+                                    jsonObject = jsonArray.getJSONObject(i);
+                                    if(jsonObject.getString("has_message_read").equals("0"))
+                                    {
+                                        unseenDataList.add(new Notification(jsonObject.getString("notification_id"),
+                                                jsonObject.getString("notification_name"), jsonObject.getString("message_text"),jsonObject.getString("attachment_url"),
+                                                jsonObject.getString("notification_type_name"),jsonObject.getString("has_message_read")));
+                                    }
+                                    else
+                                    {
+                                        seenDataList.add(new Notification(jsonObject.getString("notification_id"),
+                                                jsonObject.getString("notification_name"), jsonObject.getString("message_text"),jsonObject.getString("attachment_url"),
+                                                jsonObject.getString("notification_type_name"),jsonObject.getString("has_message_read")));
+                                    }
+                                }
+
+                            }
+                            else
+                                CustomUtility.showError(requireContext(), "No data found", "Failed");
+                        } catch (JSONException e) {
+                            CustomUtility.showError(requireContext(), e.getMessage(), "Getting Response");
                         }
-                        priorBrandAdapter = new ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_dropdown_item, priorBrandList);
-                        binding.priorBrandSpinner.setAdapter(priorBrandAdapter);
                     }
-                    else
-                        CustomUtility.showError(requireContext(), "No data found", "Failed");
-                } catch (JSONException e) {
-                    CustomUtility.showError(requireContext(), e.getMessage(), "Getting Response");
-                }
-            }
-        }, new Response.ErrorListener() {
+                }, new Response.ErrorListener() {
+            @Override
             public void onErrorResponse(VolleyError error) {
                 sweetAlertDialog.dismiss();
-                final SweetAlertDialog s = new SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE);
-                s.setConfirmText("Ok");
-                s.setTitleText("Network Error, try again!");
-                s.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        s.dismissWithAnimation();
-                        startActivity(requireActivity().getIntent());
-                        requireActivity().finish();
-                    }
-                });
-                s.show();
+                Log.e("res",error.toString());
+                CustomUtility.showError(requireActivity(), "Network Error, try again!", "Failed");
             }
         }) {
-            public Map<String, String> getParams() throws AuthFailureError {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("UserId", user.getUserId());
                 return params;
             }
-        });
+        };
 
-         */
+        MySingleton.getInstance(requireActivity()).addToRequestQue(stringRequest);
+
+        mainNotificationList.addAll(unseenDataList);
+        mainNotificationList.addAll(seenDataList);
+        mAdapter.notifyDataSetChanged();
+
     }
 
 
@@ -313,6 +333,20 @@ public class NotificationFragment extends Fragment {
             else{
                 holder.rowLayout.setBackgroundResource(R.color.seen);
             }
+            holder.rowLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    NotificationDetailsShowingFragment showingFragment = new NotificationDetailsShowingFragment();
+                    Bundle args = new Bundle();
+                    args.putParcelable("notification", dataList.get(position));
+                    showingFragment.setArguments(args);
+                    requireActivity().getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,R.anim.pop_enter, R.anim.pop_exit)
+                            .replace(R.id.nav_host_fragment, showingFragment)
+                            .addToBackStack(StaticTags.NOTIFICATION_DETAILS_SHOWING_FRAGMENT_TAG)
+                            .commit();
+                }
+            });
 
         }
 
