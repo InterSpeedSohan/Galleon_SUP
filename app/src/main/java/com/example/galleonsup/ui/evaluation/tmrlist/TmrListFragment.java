@@ -17,6 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -79,7 +80,7 @@ public class TmrListFragment extends Fragment {
 
         recyclerView = binding.retailListRecycler;
         mAdapter = new DataAdapter(dataList);
-        recyclerView.setItemViewCacheSize(20);
+        //recyclerView.setItemViewCacheSize(20);
         recyclerView.setDrawingCacheEnabled(true);
         recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         recyclerView.setHasFixedSize(true);
@@ -268,11 +269,11 @@ public class TmrListFragment extends Fragment {
 
         public  class MyViewHolder extends RecyclerView.ViewHolder {
             TextView name, id, area;
-            CardView rowLayout;
+            ConstraintLayout rowLayout;
             public MyViewHolder(View convertView) {
                 super(convertView);
 
-                rowLayout = convertView.findViewById(R.id.retail_row_layout);
+                rowLayout = convertView.findViewById(R.id.row_layout);
             }
         }
     }

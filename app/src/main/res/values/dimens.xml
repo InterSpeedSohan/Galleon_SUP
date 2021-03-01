@@ -29,7 +29,7 @@
     <dimen name="left_bullet_width">@dimen/_60sdp</dimen>
     <dimen name="ic_bullet_height">@dimen/_13sdp</dimen>
     <dimen name="ic_buttet_width">@dimen/_25sdp</dimen>
-    <dimen name="spacing">5dp</dimen>
+    <dimen name="spacing">@dimen/_4sdp</dimen>
 
 
 </resources>

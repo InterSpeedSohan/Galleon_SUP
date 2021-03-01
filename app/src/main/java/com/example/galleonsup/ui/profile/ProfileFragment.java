@@ -89,12 +89,13 @@ public class ProfileFragment extends Fragment {
         binding.totalTmr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new A()).commit();
-                requireActivity().getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,R.anim.pop_enter, R.anim.pop_exit)
-                        .replace(R.id.nav_host_fragment, new TmrListFragment())
-                        .addToBackStack(StaticTags.TMR_LIST_FRAGMENT_TAG)
-                        .commit();
+                if(requireActivity().getSupportFragmentManager().findFragmentByTag(StaticTags.TMR_LIST_FRAGMENT_TAG) == null) {
+                    requireActivity().getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.pop_enter, R.anim.pop_exit)
+                            .replace(R.id.nav_host_fragment, new TmrListFragment())
+                            .addToBackStack(StaticTags.TMR_LIST_FRAGMENT_TAG)
+                            .commit();
+                }
             }
         });
 

@@ -106,7 +106,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:gravity="center"
-                android:hint="দোকানের নাম / কোড লিখুন..."
+                android:hint="নাম / আইডি দিয়ে সার্চ করুন..."
                 android:textColor="@color/black"
                 android:textColorHint="@color/ash"
                 android:textSize="@dimen/_12ssp"
