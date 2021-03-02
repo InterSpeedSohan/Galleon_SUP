@@ -21,8 +21,9 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="@dimen/panel_icon_size_width"
+            android:layout_width="0dp"
             android:layout_height="@dimen/panel_icon_size_height"
+            app:layout_constraintDimensionRatio="15:10"
             android:background="@drawable/ic_retail"
             android:backgroundTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"

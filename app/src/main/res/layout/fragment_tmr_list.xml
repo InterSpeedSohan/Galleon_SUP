@@ -20,10 +20,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="@dimen/panel_icon_size_width"
+            android:id="@+id/mainLogo"
+            android:layout_width="0dp"
             android:layout_height="@dimen/panel_icon_size_height"
-            android:background="@drawable/ic_present_tmr"
+            app:layout_constraintDimensionRatio="16:9"
+            android:background="@drawable/ic_idle_tmr"
             android:backgroundTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -41,7 +42,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toBottomOf="@+id/mainLogo" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

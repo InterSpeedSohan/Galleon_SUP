@@ -28,17 +28,24 @@ import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.galleonsup.databinding.NavHeaderMainBinding;
+import com.example.galleonsup.model.Tmr;
 import com.example.galleonsup.model.User;
 import com.example.galleonsup.ui.notification.NotificationDetailsShowingFragment;
 import com.example.galleonsup.utils.StaticTags;
+import com.example.galleonsup.viewmodel.MainViewModel;
 import com.google.android.material.navigation.NavigationView;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -59,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
     private float x1,x2;
     static final int MIN_DISTANCE = 150;
 
+    MainViewModel mainViewModel;
+
     @SuppressLint({"RestrictedApi", "UseCompatLoadingForDrawables"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +87,20 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        try {
+            mainViewModel.searchRepositoryTmrList(new URL("https://example.com"));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        mainViewModel.getRepositoryTmrList().observe(this, new Observer<Tmr[]>() {
+
+            @Override
+            public void onChanged(Tmr[] tmrs) {
+
+            }
+        });
 
         user = User.getInstance();
         if(user.getUserId()==null)

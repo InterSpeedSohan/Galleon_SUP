@@ -32,8 +32,9 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="@dimen/panel_icon_size_width"
+            android:layout_width="0dp"
             android:layout_height="@dimen/panel_icon_size_height"
+            app:layout_constraintDimensionRatio="13:10"
             android:background="@drawable/ic_attendance_main_panel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

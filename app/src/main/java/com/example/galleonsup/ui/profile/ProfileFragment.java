@@ -18,14 +18,19 @@ import androidx.constraintlayout.widget.ConstraintLayout;;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.galleonsup.A;
 import com.example.galleonsup.R;
 import com.example.galleonsup.databinding.FragmentProfileBinding;
+import com.example.galleonsup.model.Tmr;
 import com.example.galleonsup.model.User;
 import com.example.galleonsup.ui.evaluation.tmrlist.TmrListFragment;
 import com.example.galleonsup.ui.login.LoginActivity;
 import com.example.galleonsup.utils.StaticTags;
+import com.example.galleonsup.viewmodel.MainViewModel;
 
 import org.json.JSONObject;
 
@@ -41,6 +46,8 @@ public class ProfileFragment extends Fragment {
     User user;
     SweetAlertDialog pDialog;
     JSONObject jsonObject;
+
+    MainViewModel mainViewModel;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -58,6 +65,7 @@ public class ProfileFragment extends Fragment {
 
     private void initialize(View view)
     {
+        mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         clearAllBackStackFragment();
 
         user = User.getInstance();
@@ -86,6 +94,13 @@ public class ProfileFragment extends Fragment {
         binding.todayChart.setProgress((float) 70.0,true);
         binding.totalChart.setProgress((float) 30.0,true);
 
+        mainViewModel.getRepositoryTmrList().observe(requireActivity(), new Observer<Tmr[]>() {
+            @Override
+            public void onChanged(Tmr[] tmrs) {
+                Log.d("called",tmrs[3].getTeam());
+            }
+        });
+
         binding.totalTmr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,12 +110,69 @@ public class ProfileFragment extends Fragment {
                             .replace(R.id.nav_host_fragment, new TmrListFragment())
                             .addToBackStack(StaticTags.TMR_LIST_FRAGMENT_TAG)
                             .commit();
+                    mainViewModel.setTagOfTmrFragment(StaticTags.TMR_LIST_ALL);
                 }
             }
         });
 
-    }
+        binding.presentTmr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (requireActivity().getSupportFragmentManager().findFragmentByTag(StaticTags.TMR_LIST_FRAGMENT_TAG) == null) {
+                    requireActivity().getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.pop_enter, R.anim.pop_exit)
+                            .replace(R.id.nav_host_fragment, new TmrListFragment())
+                            .addToBackStack(StaticTags.TMR_LIST_FRAGMENT_TAG)
+                            .commit();
+                    mainViewModel.setTagOfTmrFragment(StaticTags.TMR_LIST_PRESENT);
+                }
+            }
+        });
 
+        binding.absentTmr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(requireActivity().getSupportFragmentManager().findFragmentByTag(StaticTags.TMR_LIST_FRAGMENT_TAG) == null) {
+                    requireActivity().getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.pop_enter, R.anim.pop_exit)
+                            .replace(R.id.nav_host_fragment, new TmrListFragment())
+                            .addToBackStack(StaticTags.TMR_LIST_FRAGMENT_TAG)
+                            .commit();
+                    mainViewModel.setTagOfTmrFragment(StaticTags.TMR_LIST_ABSENT);
+                }
+            }
+        });
+
+        binding.leaveTmr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (requireActivity().getSupportFragmentManager().findFragmentByTag(StaticTags.TMR_LIST_FRAGMENT_TAG) == null) {
+                    requireActivity().getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.pop_enter, R.anim.pop_exit)
+                            .replace(R.id.nav_host_fragment, new TmrListFragment())
+                            .addToBackStack(StaticTags.TMR_LIST_FRAGMENT_TAG)
+                            .commit();
+                    mainViewModel.setTagOfTmrFragment(StaticTags.TMR_LIST_ON_LEAVE);
+                }
+            }
+        });
+        binding.idleTmr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(requireActivity().getSupportFragmentManager().findFragmentByTag(StaticTags.TMR_LIST_FRAGMENT_TAG) == null) {
+                    requireActivity().getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.pop_enter, R.anim.pop_exit)
+                            .replace(R.id.nav_host_fragment, new TmrListFragment())
+                            .addToBackStack(StaticTags.TMR_LIST_FRAGMENT_TAG)
+                            .commit();
+                    mainViewModel.setTagOfTmrFragment(StaticTags.TMR_LIST_IDLE);
+                }
+            }
+        });
+
+
+
+    }
     private void clearAllBackStackFragment() {
         Log.d("stack count", String.valueOf(requireActivity().getSupportFragmentManager().getBackStackEntryCount()));
         if (requireActivity().getSupportFragmentManager().getBackStackEntryCount() > 1) {

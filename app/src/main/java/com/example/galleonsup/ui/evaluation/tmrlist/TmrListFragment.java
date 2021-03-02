@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +20,8 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -31,6 +34,8 @@ import com.example.galleonsup.databinding.FragmentTmrListBinding;
 import com.example.galleonsup.model.Tmr;
 import com.example.galleonsup.model.User;
 import com.example.galleonsup.utils.SpacesItemDecoration;
+import com.example.galleonsup.utils.StaticTags;
+import com.example.galleonsup.viewmodel.MainViewModel;
 
 
 import java.util.ArrayList;
@@ -51,6 +56,8 @@ public class TmrListFragment extends Fragment {
     private final ArrayList<Tmr> mainRetailList = new ArrayList<Tmr>();
     User user;
     FragmentTmrListBinding binding;
+    MainViewModel mainViewModel;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentTmrListBinding.inflate(getLayoutInflater(),container,false);
@@ -64,6 +71,8 @@ public class TmrListFragment extends Fragment {
     }
 
     private void initialize() {
+
+
 
         user = User.getInstance();
         if(user.getUserId()==null)
@@ -94,7 +103,29 @@ public class TmrListFragment extends Fragment {
 
         getTmrList();
 
+        mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        mainViewModel.getTagOfTmrFragment().observe(requireActivity(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+               if(s == StaticTags.TMR_LIST_ALL)
+               {
+                   binding.mainLogo.setBackgroundResource(R.drawable.ic_total_tmr);
+               }
+               else if(s == StaticTags.TMR_LIST_PRESENT){
+                   binding.mainLogo.setBackgroundResource(R.drawable.ic_present_tmr);
+               }
+               else if(s == StaticTags.TMR_LIST_ABSENT){
+                   binding.mainLogo.setBackgroundResource(R.drawable.ic_absent_tmr);
+               }
+               else if(s == StaticTags.TMR_LIST_ON_LEAVE){
+                   binding.mainLogo.setBackgroundResource(R.drawable.ic_leave_tmr);
+               }
+               else if(s == StaticTags.TMR_LIST_IDLE){
+                   binding.mainLogo.setBackgroundResource(R.drawable.ic_idle_tmr);
+               }
 
+            }
+        });
 
         binding.searchRetail.addTextChangedListener(new TextWatcher() {
             @Override
