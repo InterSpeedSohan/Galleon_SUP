@@ -1,8 +1,8 @@
 package com.example.galleonsup.model;
 
 public class Tmr {
-    String name, imageString, id, area, team, strikeRate, totalVisit;
-    public Tmr(String name, String imageString, String id, String area, String team, String strikeRate, String totalVisit)
+    String name, imageString, id, area, team, strikeRate, totalStrikeRate, evaluated, totalEvaluation ,status;
+    public Tmr(String name, String imageString, String id, String area, String team, String strikeRate,String totalStrikeRate, String evaluated, String totalEvaluation, String status)
     {
         this.name = name;
         this.imageString = imageString;
@@ -10,7 +10,42 @@ public class Tmr {
         this.area = area;
         this.team = team;
         this.strikeRate = strikeRate;
-        this.totalVisit = totalVisit;
+        this.totalStrikeRate = totalStrikeRate;
+        this.evaluated = evaluated;
+        this.totalEvaluation = totalEvaluation;
+        this.status = status;
+    }
+
+    public String getEvaluated() {
+        return evaluated;
+    }
+
+    public void setEvaluated(String evaluated) {
+        this.evaluated = evaluated;
+    }
+
+    public String getTotalEvaluation() {
+        return totalEvaluation;
+    }
+
+    public void setTotalEvaluation(String totalEvaluation) {
+        this.totalEvaluation = totalEvaluation;
+    }
+
+    public String getTotalStrikeRate() {
+        return totalStrikeRate;
+    }
+
+    public void setTotalStrikeRate(String totalStrikeRate) {
+        this.totalStrikeRate = totalStrikeRate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getArea() {
@@ -61,12 +96,6 @@ public class Tmr {
         this.strikeRate = strikeRate;
     }
 
-    public String getTotalVisit() {
-        return totalVisit;
-    }
 
-    public void setTotalVisit(String totalVisit) {
-        this.totalVisit = totalVisit;
-    }
 
 }

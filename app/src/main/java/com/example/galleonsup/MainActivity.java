@@ -94,13 +94,8 @@ public class MainActivity extends AppCompatActivity {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        mainViewModel.getRepositoryTmrList().observe(this, new Observer<Tmr[]>() {
 
-            @Override
-            public void onChanged(Tmr[] tmrs) {
 
-            }
-        });
 
         user = User.getInstance();
         if(user.getUserId()==null)

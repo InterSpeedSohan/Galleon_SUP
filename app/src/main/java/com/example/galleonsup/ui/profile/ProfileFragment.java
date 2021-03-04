@@ -35,6 +35,9 @@ import com.example.galleonsup.viewmodel.MainViewModel;
 import org.json.JSONObject;
 
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -66,6 +69,48 @@ public class ProfileFragment extends Fragment {
     private void initialize(View view)
     {
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        try {
+            mainViewModel.searchRepositoryTmrList(new URL("https://example.com"));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        mainViewModel.getRepositoryTmrList().observe(requireActivity(), new Observer<ArrayList<Tmr>>() {
+            @Override
+            public void onChanged(ArrayList<Tmr> tmrs) {
+                binding.textTotalTmr.setText(String.valueOf(tmrs.size()));
+            }
+        });
+
+        mainViewModel.getRepositoryPresentTmrList().observe(requireActivity(), new Observer<ArrayList<Tmr>>() {
+            @Override
+            public void onChanged(ArrayList<Tmr> tmrs) {
+                binding.textPresentTmr.setText(String.valueOf(tmrs.size()));
+            }
+        });
+
+        mainViewModel.getRepositoryAbsentTmrList().observe(requireActivity(), new Observer<ArrayList<Tmr>>() {
+            @Override
+            public void onChanged(ArrayList<Tmr> tmrs) {
+                binding.textAbsentTmr.setText(String.valueOf(tmrs.size()));
+            }
+        });
+
+        mainViewModel.getRepositoryOnLeaveTmrList().observe(requireActivity(), new Observer<ArrayList<Tmr>>() {
+            @Override
+            public void onChanged(ArrayList<Tmr> tmrs) {
+                binding.textOnLeaveTmr.setText(String.valueOf(tmrs.size()));
+            }
+        });
+
+        mainViewModel.getRepositoryIdleTmrList().observe(requireActivity(), new Observer<ArrayList<Tmr>>() {
+            @Override
+            public void onChanged(ArrayList<Tmr> tmrs) {
+                binding.textIdleTmr.setText(String.valueOf(tmrs.size()));
+            }
+        });
+
+
         clearAllBackStackFragment();
 
         user = User.getInstance();
@@ -94,12 +139,6 @@ public class ProfileFragment extends Fragment {
         binding.todayChart.setProgress((float) 70.0,true);
         binding.totalChart.setProgress((float) 30.0,true);
 
-        mainViewModel.getRepositoryTmrList().observe(requireActivity(), new Observer<Tmr[]>() {
-            @Override
-            public void onChanged(Tmr[] tmrs) {
-                Log.d("called",tmrs[3].getTeam());
-            }
-        });
 
         binding.totalTmr.setOnClickListener(new View.OnClickListener() {
             @Override

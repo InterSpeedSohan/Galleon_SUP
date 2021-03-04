@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,6 +40,7 @@ import com.example.galleonsup.viewmodel.MainViewModel;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -53,10 +55,12 @@ public class TmrListFragment extends Fragment {
     RecyclerView recyclerView;
     DataAdapter mAdapter;
     private final ArrayList<Tmr> dataList = new ArrayList<Tmr>();
-    private final ArrayList<Tmr> mainRetailList = new ArrayList<Tmr>();
+    private final ArrayList<Tmr> mainTmrList = new ArrayList<Tmr>();
     User user;
     FragmentTmrListBinding binding;
     MainViewModel mainViewModel;
+
+    String tag = "";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -107,27 +111,89 @@ public class TmrListFragment extends Fragment {
         mainViewModel.getTagOfTmrFragment().observe(requireActivity(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-               if(s == StaticTags.TMR_LIST_ALL)
+               if(s.equals(StaticTags.TMR_LIST_ALL))
                {
+                   tag = s;
                    binding.mainLogo.setBackgroundResource(R.drawable.ic_total_tmr);
                }
-               else if(s == StaticTags.TMR_LIST_PRESENT){
+               else if(s.equals(StaticTags.TMR_LIST_PRESENT)){
+                   tag = s;
                    binding.mainLogo.setBackgroundResource(R.drawable.ic_present_tmr);
                }
-               else if(s == StaticTags.TMR_LIST_ABSENT){
+               else if(s.equals(StaticTags.TMR_LIST_ABSENT)){
+                   tag = s;
                    binding.mainLogo.setBackgroundResource(R.drawable.ic_absent_tmr);
                }
-               else if(s == StaticTags.TMR_LIST_ON_LEAVE){
+               else if(s.equals(StaticTags.TMR_LIST_ON_LEAVE)){
+                   tag = s;
                    binding.mainLogo.setBackgroundResource(R.drawable.ic_leave_tmr);
                }
-               else if(s == StaticTags.TMR_LIST_IDLE){
+               else if(s.equals(StaticTags.TMR_LIST_IDLE)){
+                   tag = s;
                    binding.mainLogo.setBackgroundResource(R.drawable.ic_idle_tmr);
                }
 
             }
         });
 
-        binding.searchRetail.addTextChangedListener(new TextWatcher() {
+        mainViewModel.getRepositoryTmrList().observe(requireActivity(), new Observer<ArrayList<Tmr>>() {
+            @Override
+            public void onChanged(ArrayList<Tmr> tmrs) {
+                if(tag.equals(StaticTags.TMR_LIST_ALL))
+                {
+                    dataList.addAll(tmrs);
+                    mainTmrList.addAll(dataList);
+                    binding.totalNumberTmr.setText("Total TMR: "+ dataList.size());
+                }
+            }
+        });
+        mainViewModel.getRepositoryPresentTmrList().observe(requireActivity(), new Observer<ArrayList<Tmr>>() {
+            @Override
+            public void onChanged(ArrayList<Tmr> tmrs) {
+               if(tag.equals(StaticTags.TMR_LIST_PRESENT))
+               {
+                   dataList.addAll(tmrs);
+                   mainTmrList.addAll(dataList);
+                   binding.totalNumberTmr.setText("Present TMR: "+ dataList.size());
+               }
+            }
+        });
+        mainViewModel.getRepositoryAbsentTmrList().observe(requireActivity(), new Observer<ArrayList<Tmr>>() {
+            @Override
+            public void onChanged(ArrayList<Tmr> tmrs) {
+                if(tag.equals(StaticTags.TMR_LIST_ABSENT))
+                {
+                    dataList.addAll(tmrs);
+                    mainTmrList.addAll(dataList);
+                    binding.totalNumberTmr.setText("Absent TMR: "+ dataList.size());
+                }
+            }
+        });
+        mainViewModel.getRepositoryOnLeaveTmrList().observe(requireActivity(), new Observer<ArrayList<Tmr>>() {
+            @Override
+            public void onChanged(ArrayList<Tmr> tmrs) {
+               if(tag.equals(StaticTags.TMR_LIST_ON_LEAVE))
+               {
+                   dataList.addAll(tmrs);
+                   mainTmrList.addAll(dataList);
+                   binding.totalNumberTmr.setText("On Leave TMR: "+ dataList.size());
+               }
+            }
+        });
+        mainViewModel.getRepositoryIdleTmrList().observe(requireActivity(), new Observer<ArrayList<Tmr>>() {
+            @Override
+            public void onChanged(ArrayList<Tmr> tmrs) {
+                if(tag.equals(StaticTags.TMR_LIST_IDLE))
+                {
+                    dataList.addAll(tmrs);
+                    mainTmrList.addAll(dataList);
+                    binding.totalNumberTmr.setText("Idle TMR: "+ dataList.size());
+                }
+            }
+        });
+
+
+        binding.searchTmr.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -152,17 +218,16 @@ public class TmrListFragment extends Fragment {
         if(s.equals(""))
         {
             dataList.clear();
-            dataList.addAll(mainRetailList);
+            dataList.addAll(mainTmrList);
         }
         else
         {
-            for(int i = 0;i < mainRetailList.size(); i++)
+            for(int i = 0;i < mainTmrList.size(); i++)
             {
-                if(mainRetailList.get(i).getName().toLowerCase().contains(s.toString().toLowerCase())
-                        || mainRetailList.get(i).getId().toLowerCase().contains(s.toString().toLowerCase())
-                        || mainRetailList.get(i).getTeam().toLowerCase().contains(s.toString().toLowerCase()))
+                if(mainTmrList.get(i).getName().toLowerCase().contains(s.toString().toLowerCase())
+                        || mainTmrList.get(i).getId().toLowerCase().contains(s.toString().toLowerCase()))
                 {
-                    newList.add(mainRetailList.get(i));
+                    newList.add(mainTmrList.get(i));
                 }
             }
         }
@@ -183,7 +248,7 @@ public class TmrListFragment extends Fragment {
                     "80.23","89.33","1"));
         }
 
-         */
+         *
         dataList.add(new Tmr("Sohanur Rahman", "","2", "43A, 14Rd, Nikunjo 2, Khilkhet, Dhaka",
                 "Team 01","40%", "30"));
         dataList.add(new Tmr("Sadat Quayium", "","3", "Hatir Jhil, Dhaka",
@@ -210,6 +275,8 @@ public class TmrListFragment extends Fragment {
                 "Team 01","50%", "40"));
         mainRetailList.addAll(dataList);
         mAdapter.notifyDataSetChanged();
+
+         */
 
 
         /*
@@ -289,8 +356,26 @@ public class TmrListFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull DataAdapter.MyViewHolder holder, int position) {
             final Tmr data = dataList.get(position);
-
-
+            holder.name.setText(data.getName());
+            if(data.getStatus().equals(StaticTags.PRESENT_SATATUS))
+            {
+                holder.imageStatus.setBackgroundResource(R.drawable.ic_present_profile);
+            }
+            else if(data.getStatus().equals(StaticTags.ABSENT_STATUS))
+            {
+                holder.imageStatus.setBackgroundResource(R.drawable.ic_absent_profile);
+            }
+            else if(data.getStatus().equals(StaticTags.ON_LEAVE_STATUS))
+            {
+                holder.imageStatus.setBackgroundResource(R.drawable.ic_leave_profile);
+            }
+            else if(data.getStatus().equals(StaticTags.IDLE_STATUS))
+            {
+                holder.imageStatus.setBackgroundResource(R.drawable.ic_idle_profile);
+            }
+            holder.idAndArea.setText(data.getId()+","+data.getArea());
+            holder.strike.setText(data.getStrikeRate()+"/"+data.getTotalStrikeRate());
+            holder.evaluation.setText(data.getEvaluated()+"/"+data.getTotalEvaluation());
         }
 
         @Override
@@ -299,11 +384,16 @@ public class TmrListFragment extends Fragment {
         }
 
         public  class MyViewHolder extends RecyclerView.ViewHolder {
-            TextView name, id, area;
+            TextView name, idAndArea, strike, evaluation;
+            ImageView imageStatus;
             ConstraintLayout rowLayout;
             public MyViewHolder(View convertView) {
                 super(convertView);
-
+                name = convertView.findViewById(R.id.tmr_name);
+                idAndArea = convertView.findViewById(R.id.id_and_area);
+                strike = convertView.findViewById(R.id.strike_rate_profile);
+                evaluation = convertView.findViewById(R.id.evaluation_profile);
+                imageStatus = convertView.findViewById(R.id.image_status);
                 rowLayout = convertView.findViewById(R.id.row_layout);
             }
         }

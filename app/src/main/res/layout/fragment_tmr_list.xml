@@ -33,7 +33,7 @@
             app:layout_constraintVertical_bias="0.35" />
 
         <TextView
-            android:id="@+id/total_retail"
+            android:id="@+id/total_number_tmr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TMR List: 16"
@@ -101,7 +101,7 @@
 
 
             <EditText
-                android:id="@+id/search_retail"
+                android:id="@+id/search_tmr"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
